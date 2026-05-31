@@ -74,13 +74,43 @@ export default function CashierLayout({
     const isOpen = sessionData?.is_open ?? false;
     const currency = sessionData?.currency || 'XAF';
 
-    const navigation = [
+/*    const navigation = [
         { name: 'Nouveau Dépôt / Versement', href: '/cash/remittance/send', icon: ArrowUpRight, color: 'text-emerald-500 bg-emerald-500/10' },
         { name: 'Nouveau Retrait', href: '/cash/remittance/payout', icon: ArrowDownLeft, color: 'text-amber-500 bg-amber-500/10' },
         { name: 'Historique des opérations', href: '/cash/history', icon: History, color: 'text-green-500 bg-green-500/10' },
         { name: 'Ouverture & Clôture', href: '/cash/session', icon: Clock, color: 'text-purple-500 bg-purple-500/10' },
+    ];*/
+    const navigation = [
+        {
+            title: "Opérations Courantes",
+            items: [
+                { name: 'Transfert Wallet', href: '/cash/transfer', icon: ArrowUpRight, color: 'text-emerald-500 bg-emerald-500/10' },
+                { name: 'Dépôt / Cash-in', href: '/cash/cash-in', icon: ArrowDownLeft, color: 'text-blue-500 bg-blue-500/10' },
+                { name: 'Retrait / Cash-out', href: '/cash/cash-out', icon: ArrowDownLeft, color: 'text-amber-500 bg-amber-500/10' },
+            ]
+        },
+        {
+            title: "Remittance (International)",
+            items: [
+                { name: 'Envoi', href: '/cash/remittance/send', icon: ArrowUpRight, color: 'text-pink-500 bg-pink-500/10' },
+                { name: 'Retrait', href: '/cash/remittance/payout', icon: ArrowDownLeft, color: 'text-cyan-500 bg-cyan-500/10' },
+            ]
+        },
+        {
+            title: "Bancaire & Remises",
+            items: [
+              /*  { name: 'Opérations Bancaires', href: '/cash/banking', icon: Building, color: 'text-cyan-500 bg-cyan-500/10' },*/
+                { name: 'Paiement Factures', href: '/cash/bills-payment', icon: MonitorPlay, color: 'text-orange-500 bg-orange-500/10' },
+            ]
+        },
+        {
+            title: "Gestion & Audit",
+            items: [
+                { name: 'Historique', href: '/cash/history', icon: History, color: 'text-slate-500 bg-slate-500/10' },
+                { name: 'Session & Ajustements', href: '/cash/session', icon: Clock, color: 'text-purple-500 bg-purple-500/10' },
+            ]
+        }
     ];
-
     return (
         <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col antialiased selection:bg-green-500 selection:text-white">
 
@@ -100,16 +130,6 @@ export default function CashierLayout({
                         )}
                         <div className="flex flex-col">
                             {/* Brand Header */}
-{/*                            <span className="font-black text-sm tracking-tight text-white flex items-center gap-2">
-        <span className="p-1 rounded-lg text-white flex items-center justify-center">
-            <img
-                src="/icon.png"
-                alt="Guen's Union Logo"
-                className="w-8 h-8 object-contain"
-            />
-        </span>
-        GUEN'S <span className="text-green-500 font-medium">UNION</span>
-    </span>*/}
                             <img
                                 src="/logo.png"
                                 alt="Guen's Union Logo"
@@ -186,36 +206,33 @@ export default function CashierLayout({
                         `}>
                             <div className="space-y-2">
                                 <p className="px-3 text-[10px] font-bold uppercase tracking-widest text-slate-400">Opérations Guichet</p>
-                                <nav className="space-y-1.5 pt-1">
-                                    {navigation.map((item) => {
-                                        const isActive = pathname === item.href;
-                                        const Icon = item.icon;
-                                        return (
-                                            <Link
-                                                key={item.name}
-                                                href={item.href}
-                                                onClick={() => setIsMobileMenuOpen(false)}
-                                                className={`flex items-center justify-between group px-3.5 py-3 rounded-xl text-xs font-bold transition-all duration-150 relative ${
-                                                    isActive
-                                                        ? 'bg-[#1d9e4b] text-white shadow-md shadow-green-500/10'
-                                                        : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
-                                                }`}
-                                            >
-                                                <div className="flex items-center gap-3">
-                                                    <span className={`p-1.5 rounded-lg transition-colors ${isActive ? 'bg-white/10 text-white' : item.color}`}>
+                                {navigation.map((section) => (
+                                    <div key={section.title} className="mb-8">
+                                        <p className="px-3 mb-2 text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                                            {section.title}
+                                        </p>
+                                        <nav className="space-y-1">
+                                            {section.items.map((item) => {
+                                                const isActive = pathname === item.href;
+                                                const Icon = item.icon;
+                                                return (
+                                                    <Link
+                                                        key={item.name}
+                                                        href={item.href}
+                                                        className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all ${
+                                                            isActive
+                                                                ? 'bg-[#1d9e4b] text-white shadow-md'
+                                                                : 'text-slate-600 hover:bg-slate-100'
+                                                        }`}
+                                                    >
                                                         <Icon className="w-4 h-4" />
-                                                    </span>
-                                                    <span className="tracking-tight">{item.name}</span>
-                                                </div>
-
-                                                {/* Ligne d'activation latérale */}
-                                                {isActive && (
-                                                    <span className="absolute right-0 top-1/3 bottom-1/3 w-1 bg-white rounded-l-md" />
-                                                )}
-                                            </Link>
-                                        );
-                                    })}
-                                </nav>
+                                                        {item.name}
+                                                    </Link>
+                                                );
+                                            })}
+                                        </nav>
+                                    </div>
+                                ))}
                             </div>
                         </aside>
 
