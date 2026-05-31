@@ -48,7 +48,7 @@ export default function GlobalTransactionsPage() {
     const typeBadges: Record<string, { label: string; bg: string; text: string; icon: any }> = {
         deposit: { label: 'Dépôt Cash', bg: 'bg-emerald-50 border-emerald-100', text: 'text-emerald-700', icon: ArrowDownRight },
         withdrawal: { label: 'Retrait Cash', bg: 'bg-amber-50 border-amber-100', text: 'text-amber-700', icon: ArrowUpRight },
-        transfer: { label: 'Transfert Direct', bg: 'bg-blue-50 border-blue-100', text: 'text-blue-700', icon: ArrowLeftRight },
+        transfer: { label: 'Transfert Direct', bg: 'bg-green-50 border-green-100', text: 'text-green-700', icon: ArrowLeftRight },
         remittance: { label: 'Remise Agence', bg: 'bg-purple-50 border-purple-100', text: 'text-purple-700', icon: Building2 },
     };
 
@@ -91,7 +91,7 @@ export default function GlobalTransactionsPage() {
                             <span className="text-sm font-sans font-bold text-slate-500 ml-1">XAF</span>
                         </p>
                     </div>
-                    <div className="bg-blue-50 p-3 rounded-xl text-blue-600">
+                    <div className="bg-green-50 p-3 rounded-xl text-green-600">
                         <TrendingUp className="w-5 h-5" />
                     </div>
                 </div>
@@ -129,7 +129,7 @@ export default function GlobalTransactionsPage() {
                         placeholder="Rechercher par référence, donneur d'ordre, bénéficiaire..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        className="w-full pl-10 pr-4 py-2 bg-slate-50/50 border border-slate-200 rounded-xl text-sm placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:bg-white transition-all"
+                        className="w-full pl-10 pr-4 py-2 bg-slate-50/50 border border-slate-200 rounded-xl text-sm placeholder-slate-400 focus:outline-none focus:border-green-500 focus:bg-white transition-all"
                     />
                 </div>
                 <div className="flex gap-2">
@@ -139,7 +139,7 @@ export default function GlobalTransactionsPage() {
                     <select
                         value={typeFilter}
                         onChange={(e) => setTypeFilter(e.target.value)}
-                        className="px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 focus:outline-none focus:border-indigo-500"
+                        className="px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 focus:outline-none focus:border-green-500"
                     >
                         <option value="all">Toutes les natures d'opérations</option>
                         <option value="deposit">Dépôts (Cash-In)</option>
@@ -153,7 +153,7 @@ export default function GlobalTransactionsPage() {
             {/* États de Chargement et Erreurs UX */}
             {isLoading && (
                 <div className="bg-white rounded-2xl border border-slate-100 p-12 flex flex-col items-center justify-center gap-2">
-                    <RefreshCw className="h-6 w-6 animate-spin text-indigo-600" />
+                    <RefreshCw className="h-6 w-6 animate-spin text-green-600" />
                     <p className="text-xs font-medium text-slate-400">Génération du journal d'audit en temps réel...</p>
                 </div>
             )}

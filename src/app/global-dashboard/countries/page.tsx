@@ -106,7 +106,7 @@ export default function GlobalCountriesPage() {
                 </div>
                 <div className="flex gap-2">
                     <button onClick={() => refetch()} className="bg-white border border-slate-200 p-2.5 rounded-xl shadow-sm"><RefreshCw className="w-4 h-4 text-slate-500" /></button>
-                    <button onClick={() => setIsModalOpen(true)} className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2.5 rounded-xl text-sm font-semibold shadow-md"><Plus className="w-4 h-4" /> Ouvrir un pays</button>
+                    <button onClick={() => setIsModalOpen(true)} className="flex items-center gap-2 bg-green-600 text-white px-4 py-2.5 rounded-xl text-sm font-semibold shadow-md"><Plus className="w-4 h-4" /> Ouvrir un pays</button>
                 </div>
             </div>
 
@@ -121,7 +121,7 @@ export default function GlobalCountriesPage() {
                 {/* Liste des Pays (Prend 2 colonnes si le gestionnaire de villes est ouvert) */}
                 <div className={`grid grid-cols-1 md:grid-cols-2 gap-6 ${selectedCountryForCities ? 'lg:col-span-2' : 'lg:col-span-3'}`}>
                     {filteredCountries.map((country: any) => (
-                        <div key={country.uuid} className={`bg-white border rounded-2xl shadow-sm overflow-hidden flex flex-col justify-between transition-all ${selectedCountryForCities?.uuid === country.uuid ? 'ring-2 ring-blue-500 border-transparent' : 'border-slate-200'}`}>
+                        <div key={country.uuid} className={`bg-white border rounded-2xl shadow-sm overflow-hidden flex flex-col justify-between transition-all ${selectedCountryForCities?.uuid === country.uuid ? 'ring-2 ring-green-500 border-transparent' : 'border-slate-200'}`}>
                             <div className="p-5 space-y-4">
                                 <div className="flex items-start justify-between">
                                     <div>
@@ -133,16 +133,16 @@ export default function GlobalCountriesPage() {
                                         {/* Badge du nombre de villes */}
                                         <button
                                             onClick={() => setSelectedCountryForCities(country)}
-                                            className="mt-2 text-xs text-blue-600 bg-blue-50 hover:bg-blue-100 font-bold px-2.5 py-1 rounded-lg flex items-center gap-1.5 transition-all"
+                                            className="mt-2 text-xs text-green-600 bg-green-50 hover:bg-green-100 font-bold px-2.5 py-1 rounded-lg flex items-center gap-1.5 transition-all"
                                         >
                                             <Building2 className="w-3.5 h-3.5" />
                                             {country.cities?.length || 0} ville(s) configurée(s)
                                         </button>
                                     </div>
 
-                                    <div className="bg-blue-50/60 p-2 rounded-xl text-right">
-                                        <div className="text-xs font-bold text-blue-700 flex items-center gap-1"><Coins className="w-3.5 h-3.5" />{country.currency_code}</div>
-                                        <div className="text-[10px] text-blue-500 font-bold mt-0.5">{country.currency_symbol}</div>
+                                    <div className="bg-green-50/60 p-2 rounded-xl text-right">
+                                        <div className="text-xs font-bold text-green-700 flex items-center gap-1"><Coins className="w-3.5 h-3.5" />{country.currency_code}</div>
+                                        <div className="text-[10px] text-green-500 font-bold mt-0.5">{country.currency_symbol}</div>
                                     </div>
                                 </div>
 
@@ -153,7 +153,7 @@ export default function GlobalCountriesPage() {
                                             <p className="text-[10px] text-slate-400 font-bold uppercase flex items-center gap-1"><ArrowDownLeft className="w-3 h-3 text-emerald-500" /> Cash In</p>
                                             <p className="text-slate-700 mt-0.5">{country.can_cash_in ? "Autorisé" : "Bloqué"}</p>
                                         </div>
-                                        <button onClick={() => updateStatusMutation.mutate({ uuid: country.uuid, field: 'can_cash_in' })} className={country.can_cash_in ? 'text-blue-600' : 'text-slate-300'}><ToggleRight className="w-6 h-6" /></button>
+                                        <button onClick={() => updateStatusMutation.mutate({ uuid: country.uuid, field: 'can_cash_in' })} className={country.can_cash_in ? 'text-green-600' : 'text-slate-300'}><ToggleRight className="w-6 h-6" /></button>
                                     </div>
 
                                     <div className="bg-slate-50 rounded-xl p-2.5 flex items-center justify-between">
@@ -161,7 +161,7 @@ export default function GlobalCountriesPage() {
                                             <p className="text-[10px] text-slate-400 font-bold uppercase flex items-center gap-1"><ArrowUpRight className="w-3 h-3 text-amber-500" /> Cash Out</p>
                                             <p className="text-slate-700 mt-0.5">{country.can_cash_out ? "Autorisé" : "Bloqué"}</p>
                                         </div>
-                                        <button onClick={() => updateStatusMutation.mutate({ uuid: country.uuid, field: 'can_cash_out' })} className={country.can_cash_out ? 'text-blue-600' : 'text-slate-300'}><ToggleRight className="w-6 h-6" /></button>
+                                        <button onClick={() => updateStatusMutation.mutate({ uuid: country.uuid, field: 'can_cash_out' })} className={country.can_cash_out ? 'text-green-600' : 'text-slate-300'}><ToggleRight className="w-6 h-6" /></button>
                                     </div>
                                 </div>
                             </div>
@@ -205,12 +205,12 @@ export default function GlobalCountriesPage() {
                                 required
                                 value={newCityName}
                                 onChange={(e) => setNewCityName(e.target.value)}
-                                className="flex-1 px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-blue-500 focus:bg-white transition-all font-semibold"
+                                className="flex-1 px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-green-500 focus:bg-white transition-all font-semibold"
                             />
                             <button
                                 type="submit"
                                 disabled={createCityMutation.isPending}
-                                className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-xl text-xs font-bold transition-colors shadow-sm"
+                                className="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-xl text-xs font-bold transition-colors shadow-sm"
                             >
                                 {createCityMutation.isPending ? '...' : 'Ajouter'}
                             </button>
@@ -235,7 +235,7 @@ export default function GlobalCountriesPage() {
                                                 // Ajustement de l'état local pour fluidité visuelle
                                                 city.is_active = !city.is_active;
                                             }}
-                                            className={city.is_active ? 'text-blue-600' : 'text-slate-300'}
+                                            className={city.is_active ? 'text-green-600' : 'text-slate-300'}
                                         >
                                             {city.is_active ? <ToggleRight className="w-5 h-5" /> : <ToggleLeft className="w-5 h-5" />}
                                         </button>
@@ -253,7 +253,7 @@ export default function GlobalCountriesPage() {
                 <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
                     <div className="bg-white rounded-2xl border border-slate-200 shadow-2xl max-w-md w-full p-6 space-y-4">
                         <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-                            <h3 className="text-base font-bold text-slate-900 flex items-center gap-2"><Globe className="w-4 h-4 text-blue-600" /> Configurer un nouveau Pays</h3>
+                            <h3 className="text-base font-bold text-slate-900 flex items-center gap-2"><Globe className="w-4 h-4 text-green-600" /> Configurer un nouveau Pays</h3>
                             <button onClick={() => setIsModalOpen(false)} className="p-1 rounded-lg text-slate-400 hover:bg-slate-50 hover:text-slate-700"><X className="w-4 h-4" /></button>
                         </div>
 
@@ -288,7 +288,7 @@ export default function GlobalCountriesPage() {
 
                             <div className="flex gap-3 pt-2">
                                 <button type="button" onClick={() => setIsModalOpen(false)} className="flex-1 border border-slate-200 text-slate-700 py-2.5 rounded-xl text-xs hover:bg-slate-50 font-bold">Annuler</button>
-                                <button type="submit" disabled={createCountryMutation.isPending} className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-xl text-xs shadow-md font-bold">
+                                <button type="submit" disabled={createCountryMutation.isPending} className="flex-1 bg-green-600 hover:bg-green-700 text-white py-2.5 rounded-xl text-xs shadow-md font-bold">
                                     {createCountryMutation.isPending ? 'Ouverture...' : 'Ouvrir le pays'}
                                 </button>
                             </div>

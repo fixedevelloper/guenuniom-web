@@ -158,7 +158,7 @@ export default function AgencyTransactionsPage() {
                                                 <div className="flex items-center gap-2">
                                                     <div className={`p-1.5 rounded-lg border ${
                                                         tx.transaction_type === 'cash_in' 
-                                                            ? 'bg-blue-50 border-blue-100 text-blue-600' 
+                                                            ? 'bg-green-50 border-green-100 text-green-600' 
                                                             : 'bg-amber-50 border-amber-100 text-amber-600'
                                                     }`}>
                                                         {tx.transaction_type === 'cash_in' ? <ArrowDownLeft className="w-3.5 h-3.5" /> : <ArrowUpRight className="w-3.5 h-3.5" />}

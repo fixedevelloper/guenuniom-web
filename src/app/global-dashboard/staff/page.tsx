@@ -126,7 +126,7 @@ export default function GlobalStaffPage() {
                     </button>
                     <button
                         onClick={() => setIsModalOpen(true)}
-                        className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-xl text-sm font-semibold shadow-md shadow-blue-200 transition-all"
+                        className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2.5 rounded-xl text-sm font-semibold shadow-md shadow-green-200 transition-all"
                     >
                         <UserPlus className="w-4 h-4" /> Enregistrer un collaborateur
                     </button>
@@ -142,7 +142,7 @@ export default function GlobalStaffPage() {
                         placeholder="Rechercher par nom, email, téléphone ou rôle..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        className="w-full pl-10 pr-4 py-2 bg-slate-50/50 border border-slate-200 rounded-xl text-sm placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                        className="w-full pl-10 pr-4 py-2 bg-slate-50/50 border border-slate-200 rounded-xl text-sm placeholder-slate-400 focus:outline-none focus:border-green-500 focus:bg-white transition-all"
                     />
                 </div>
             </div>
@@ -150,7 +150,7 @@ export default function GlobalStaffPage() {
             {/* Loader */}
             {isLoading && (
                 <div className="bg-white rounded-2xl border border-slate-100 p-12 flex flex-col items-center justify-center gap-2">
-                    <RefreshCw className="h-6 w-6 animate-spin text-blue-600" />
+                    <RefreshCw className="h-6 w-6 animate-spin text-green-600" />
                     <p className="text-xs font-medium text-slate-400">Indexation de l'annuaire du personnel...</p>
                 </div>
             )}
@@ -237,7 +237,7 @@ export default function GlobalStaffPage() {
                                                 <button
                                                     onClick={() => toggleStatusMutation.mutate(user.uuid)}
                                                     disabled={toggleStatusMutation.isPending}
-                                                    className={`p-1 rounded-lg transition-colors ${user.is_active ? 'text-blue-600 hover:bg-blue-50' : 'text-slate-400 hover:bg-slate-100'}`}
+                                                    className={`p-1 rounded-lg transition-colors ${user.is_active ? 'text-green-600 hover:bg-green-50' : 'text-slate-400 hover:bg-slate-100'}`}
                                                     title={user.is_active ? "Suspendre le compte" : "Activer le compte"}
                                                 >
                                                     {user.is_active ? <ToggleRight className="w-6 h-6" /> : <ToggleLeft className="w-6 h-6" />}
@@ -258,7 +258,7 @@ export default function GlobalStaffPage() {
                 <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
                     <div className="bg-white rounded-2xl border border-slate-200 shadow-2xl max-w-lg w-full p-6 space-y-4 max-h-[95vh] overflow-y-auto">
                         <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-                            <h3 className="text-base font-bold text-slate-900 flex items-center gap-2"><Users className="w-4 h-4 text-blue-600" /> Enregistrer un Utilisateur Staff</h3>
+                            <h3 className="text-base font-bold text-slate-900 flex items-center gap-2"><Users className="w-4 h-4 text-green-600" /> Enregistrer un Utilisateur Staff</h3>
                             <button onClick={() => setIsModalOpen(false)} className="text-slate-400 hover:text-slate-700"><X className="w-4 h-4" /></button>
                         </div>
 
@@ -308,7 +308,7 @@ export default function GlobalStaffPage() {
                             {formData.role !== 'super_admin' && (
                                 <div className="grid grid-cols-2 gap-3 border-t border-slate-100 pt-3">
                                     <div className="space-y-1">
-                                        <label className="text-xs text-slate-500 font-bold flex items-center gap-1"><MapPin className="w-3 h-3 text-blue-500" /> Pays de Rattachement</label>
+                                        <label className="text-xs text-slate-500 font-bold flex items-center gap-1"><MapPin className="w-3 h-3 text-green-500" /> Pays de Rattachement</label>
                                         <select
                                             required
                                             value={formData.country_id}
@@ -346,7 +346,7 @@ export default function GlobalStaffPage() {
                             {/* Validation */}
                             <div className="flex gap-3 pt-2">
                                 <button type="button" onClick={() => setIsModalOpen(false)} className="flex-1 border border-slate-200 text-slate-700 font-bold py-2.5 rounded-xl text-xs hover:bg-slate-50">Annuler</button>
-                                <button type="submit" disabled={createStaffMutation.isPending} className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-xl text-xs shadow-md">
+                                <button type="submit" disabled={createStaffMutation.isPending} className="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 rounded-xl text-xs shadow-md">
                                     {createStaffMutation.isPending ? 'Création...' : 'Créer le compte'}
                                 </button>
                             </div>

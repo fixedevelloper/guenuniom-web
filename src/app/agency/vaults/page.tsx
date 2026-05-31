@@ -175,7 +175,7 @@ export default function AgencyVaultsPage() {
                                         <td className="py-3 px-6">
                                             <span className={`inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold rounded uppercase font-mono ${
                                                 log.type === 'cash_in' || log.type === 'opening'
-                                                    ? 'bg-blue-50 text-blue-700 border border-blue-100' 
+                                                    ? 'bg-green-50 text-green-700 border border-green-100' 
                                                     : log.type === 'adjustment'
                                                     ? 'bg-purple-50 text-purple-700 border border-purple-100'
                                                     : 'bg-amber-50 text-amber-700 border border-amber-100'

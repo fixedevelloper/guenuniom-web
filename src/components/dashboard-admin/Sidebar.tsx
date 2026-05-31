@@ -24,10 +24,11 @@ export function Sidebar({ isOpen, onClose, onLogout }: SidebarProps) {
                 {/* Logo */}
                 <div className="flex items-center justify-between h-10 px-2 mb-2">
                     <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 bg-blue-600 rounded-xl flex items-center justify-center font-black text-white text-sm shadow-md shadow-blue-200">
-                            A
-                        </div>
-                        <span className="text-lg font-black tracking-wider text-slate-900">AGENSIC</span>
+                        <img
+                            src="/logo.png"
+                            alt="Guen's Union Logo"
+                            className="w-50 h-20 object-contain"
+                        />
                     </div>
                     <button
                         className="lg:hidden p-1.5 rounded-xl bg-slate-50 border border-slate-200 hover:bg-slate-100 transition-colors"
@@ -58,16 +59,16 @@ export function Sidebar({ isOpen, onClose, onLogout }: SidebarProps) {
                                             className={cn(
                                                 "flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold relative transition-all duration-200 group",
                                                 isActive
-                                                    ? "bg-blue-50 text-blue-600"
+                                                    ? "bg-blue-50 text-green-600"
                                                     : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                                             )}
                                         >
                                             {isActive && (
-                                                <div className="absolute left-0 top-2.5 bottom-2.5 w-1 bg-blue-600 rounded-r-full" />
+                                                <div className="absolute left-0 top-2.5 bottom-2.5 w-1 bg-green-600 rounded-r-full" />
                                             )}
                                             <item.icon className={cn(
                                                 "w-4 h-4 transition-colors",
-                                                isActive ? "text-blue-600" : "text-slate-400 group-hover:text-slate-600"
+                                                isActive ? "text-green-600" : "text-slate-400 group-hover:text-slate-600"
                                             )} />
                                             {item.name}
                                         </Link>

@@ -132,7 +132,7 @@ export default function GlobalAgenciesPage() {
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-200/60 pb-5">
                 <div className="space-y-1">
                     <h1 className="text-xl font-black text-slate-900 tracking-tight flex items-center gap-2.5">
-                        <span className="p-2 bg-blue-500/10 text-blue-600 rounded-xl border border-blue-500/20">
+                        <span className="p-2 bg-green-500/10 text-green-600 rounded-xl border border-green-500/20">
                             <Building2 className="w-5 h-5" />
                         </span>
                         Réseau d'Agences & Guichets
@@ -145,7 +145,7 @@ export default function GlobalAgenciesPage() {
                     </button>
                     <button
                         onClick={() => { setErrorMessage(null); setIsModalOpen(true); }}
-                        className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider shadow-md shadow-blue-200/50 transition-all"
+                        className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider shadow-md shadow-green-200/50 transition-all"
                     >
                         <Plus className="w-4 h-4 stroke-[3]" /> Enregistrer une agence
                     </button>
@@ -161,7 +161,7 @@ export default function GlobalAgenciesPage() {
                         placeholder="Rechercher par nom, code, ville, pays d'implantation..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        className="w-full pl-10 pr-4 py-2 bg-slate-50/60 border border-slate-200 rounded-xl text-xs font-medium placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                        className="w-full pl-10 pr-4 py-2 bg-slate-50/60 border border-slate-200 rounded-xl text-xs font-medium placeholder-slate-400 focus:outline-none focus:border-green-500 focus:bg-white transition-all"
                     />
                 </div>
             </div>
@@ -169,7 +169,7 @@ export default function GlobalAgenciesPage() {
             {/* Loader d'attente */}
             {isLoading && (
                 <div className="bg-white rounded-2xl border border-slate-200 p-16 flex flex-col items-center justify-center gap-3 shadow-sm">
-                    <RefreshCw className="h-6 w-6 animate-spin text-blue-600" />
+                    <RefreshCw className="h-6 w-6 animate-spin text-green-600" />
                     <p className="text-xs font-bold font-mono uppercase tracking-wider text-slate-400">Cartographie du réseau de guichets...</p>
                 </div>
             )}
@@ -188,10 +188,10 @@ export default function GlobalAgenciesPage() {
                                 <div className="p-5 space-y-4">
                                     <div className="flex items-start justify-between gap-2">
                                         <div className="space-y-1.5 flex-1 min-w-0">
-                                            <span className="inline-flex items-center gap-1 text-[9px] uppercase font-mono font-black tracking-widest text-blue-600 bg-blue-50 border border-blue-100 px-2 py-0.5 rounded-lg">
+                                            <span className="inline-flex items-center gap-1 text-[9px] uppercase font-mono font-black tracking-widest text-green-600 bg-green-50 border border-green-100 px-2 py-0.5 rounded-lg">
                                                 <Hash className="w-2.5 h-2.5" /> {agency.code}
                                             </span>
-                                            <h3 className="font-bold text-sm text-slate-900 group-hover:text-blue-600 transition-colors flex items-center gap-1.5 mt-1 truncate">
+                                            <h3 className="font-bold text-sm text-slate-900 group-hover:text-green-600 transition-colors flex items-center gap-1.5 mt-1 truncate">
                                                 {agency.name}
                                             </h3>
                                             <p className="text-xs text-slate-400 flex items-center gap-1.5 pt-0.5 truncate">
@@ -241,7 +241,7 @@ export default function GlobalAgenciesPage() {
                                     <button
                                         onClick={() => toggleAgencyMutation.mutate(agency.uuid)}
                                         disabled={toggleAgencyMutation.isPending}
-                                        className="p-0.5 rounded-lg text-blue-600 transition-all disabled:opacity-50 hover:scale-105"
+                                        className="p-0.5 rounded-lg text-green-600 transition-all disabled:opacity-50 hover:scale-105"
                                     >
                                         {agency.is_active ? <ToggleRight className="w-6 h-6 text-emerald-600" /> : <ToggleLeft className="w-6 h-6 text-slate-300" />}
                                     </button>
@@ -259,7 +259,7 @@ export default function GlobalAgenciesPage() {
                     <div className="bg-white rounded-2xl border border-slate-200 shadow-2xl max-w-md w-full p-6 space-y-4">
                         <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                             <h3 className="text-sm font-black uppercase tracking-wider text-slate-900 flex items-center gap-2">
-                                <Building2 className="w-4 h-4 text-blue-600" /> Configurer une Agence
+                                <Building2 className="w-4 h-4 text-green-600" /> Configurer une Agence
                             </h3>
                             <button onClick={() => setIsModalOpen(false)} className="p-1 rounded-lg text-slate-400 hover:bg-slate-50"><X className="w-4 h-4" /></button>
                         </div>
@@ -277,17 +277,17 @@ export default function GlobalAgenciesPage() {
                             <div className="grid grid-cols-3 gap-3">
                                 <div className="col-span-2 space-y-1">
                                     <label className="text-[10px] uppercase text-slate-500 tracking-wide">Nom commercial</label>
-                                    <input type="text" placeholder="Ex: Agence Akwa" required value={formData.name} onChange={(e) => handleNameChange(e.target.value)} className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold h-10 text-xs focus:outline-none focus:border-blue-500 focus:bg-white transition-all" />
+                                    <input type="text" placeholder="Ex: Agence Akwa" required value={formData.name} onChange={(e) => handleNameChange(e.target.value)} className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold h-10 text-xs focus:outline-none focus:border-green-500 focus:bg-white transition-all" />
                                 </div>
                                 <div className="space-y-1">
                                     <label className="text-[10px] uppercase text-slate-500 tracking-wide">Code Unique</label>
-                                    <input type="text" placeholder="AGE-AKW" required value={formData.code} onChange={(e) => setFormData({...formData, code: e.target.value.toUpperCase()})} className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl font-mono font-black text-blue-600 h-10 text-xs tracking-wider" />
+                                    <input type="text" placeholder="AGE-AKW" required value={formData.code} onChange={(e) => setFormData({...formData, code: e.target.value.toUpperCase()})} className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl font-mono font-black text-green-600 h-10 text-xs tracking-wider" />
                                 </div>
                             </div>
 
                             <div className="space-y-1">
                                 <label className="text-[10px] uppercase text-slate-500 tracking-wide">Adresse physique (Rue / Quartier)</label>
-                                <input type="text" placeholder="Ex: Boulevard de la Liberté" required value={formData.address} onChange={(e) => setFormData({...formData, address: e.target.value})} className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl font-medium h-10 text-xs focus:outline-none focus:border-blue-500 focus:bg-white transition-all" />
+                                <input type="text" placeholder="Ex: Boulevard de la Liberté" required value={formData.address} onChange={(e) => setFormData({...formData, address: e.target.value})} className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl font-medium h-10 text-xs focus:outline-none focus:border-green-500 focus:bg-white transition-all" />
                             </div>
 
                             <div className="grid grid-cols-2 gap-3">
@@ -297,7 +297,7 @@ export default function GlobalAgenciesPage() {
                                         required
                                         value={formData.country_id}
                                         onChange={(e) => setFormData({...formData, country_id: e.target.value, city_id: ''})}
-                                        className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 h-10 focus:outline-none focus:border-blue-500 transition-all"
+                                        className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 h-10 focus:outline-none focus:border-green-500 transition-all"
                                     >
                                         <option value="">Choisir un pays</option>
                                         {countries?.map((c: any) => (
@@ -313,7 +313,7 @@ export default function GlobalAgenciesPage() {
                                         disabled={!formData.country_id}
                                         value={formData.city_id}
                                         onChange={(e) => setFormData({...formData, city_id: e.target.value})}
-                                        className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 h-10 disabled:opacity-50 focus:outline-none focus:border-blue-500 transition-all"
+                                        className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 h-10 disabled:opacity-50 focus:outline-none focus:border-green-500 transition-all"
                                     >
                                         <option value="">Choisir une ville</option>
                                         {availableCities.map((city: any) => (
@@ -329,7 +329,7 @@ export default function GlobalAgenciesPage() {
                                     <select
                                         value={formData.status}
                                         onChange={(e) => setFormData({...formData, status: e.target.value})}
-                                        className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 h-10 focus:outline-none focus:border-blue-500 transition-all"
+                                        className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 h-10 focus:outline-none focus:border-green-500 transition-all"
                                     >
                                         <option value="active">Active (Ouverte)</option>
                                         <option value="suspended">Suspendue</option>
@@ -341,7 +341,7 @@ export default function GlobalAgenciesPage() {
                                     <select
                                         value={formData.is_active ? "true" : "false"}
                                         onChange={(e) => setFormData({...formData, is_active: e.target.value === "true"})}
-                                        className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 h-10 focus:outline-none focus:border-blue-500 transition-all"
+                                        className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 h-10 focus:outline-none focus:border-green-500 transition-all"
                                     >
                                         <option value="true">Autoriser les transactions</option>
                                         <option value="false">Bloquer les flux</option>
@@ -351,7 +351,7 @@ export default function GlobalAgenciesPage() {
 
                             <div className="flex gap-3 pt-3">
                                 <button type="button" onClick={() => setIsModalOpen(false)} className="flex-1 border border-slate-200 text-slate-700 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider hover:bg-slate-50 transition-colors">Annuler</button>
-                                <button type="submit" disabled={createAgencyMutation.isPending} className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-xl text-xs font-black uppercase tracking-wider shadow-md flex items-center justify-center gap-1.5 transition-colors">
+                                <button type="submit" disabled={createAgencyMutation.isPending} className="flex-1 bg-green-600 hover:bg-green-700 text-white py-2.5 rounded-xl text-xs font-black uppercase tracking-wider shadow-md flex items-center justify-center gap-1.5 transition-colors">
                                     {createAgencyMutation.isPending && <RefreshCw className="w-3.5 h-3.5 animate-spin" />}
                                     {createAgencyMutation.isPending ? 'Ouverture...' : 'Enregistrer'}
                                 </button>

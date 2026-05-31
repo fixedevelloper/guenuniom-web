@@ -96,7 +96,7 @@ export default function GlobalTillsPage() {
                             <span className="text-sm font-sans font-bold text-slate-500 ml-1">XAF</span>
                         </p>
                     </div>
-                    <div className="bg-indigo-50 p-3 rounded-xl text-indigo-600">
+                    <div className="bg-green-50 p-3 rounded-xl text-green-600">
                         <DollarSign className="w-5 h-5" />
                     </div>
                 </div>
@@ -137,13 +137,13 @@ export default function GlobalTillsPage() {
                         placeholder="Filtrer par code caisse, guichetier ou agence..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        className="w-full pl-10 pr-4 py-2 bg-slate-50/50 border border-slate-200 rounded-xl text-sm placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:bg-white transition-all"
+                        className="w-full pl-10 pr-4 py-2 bg-slate-50/50 border border-slate-200 rounded-xl text-sm placeholder-slate-400 focus:outline-none focus:border-green-500 focus:bg-white transition-all"
                     />
                 </div>
                 <select
                     value={statusFilter}
                     onChange={(e) => setStatusFilter(e.target.value)}
-                    className="px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 focus:outline-none focus:border-indigo-500"
+                    className="px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 focus:outline-none focus:border-green-500"
                 >
                     <option value="all">Tous les états de session</option>
                     <option value="open">Sessions Ouvertes</option>
@@ -155,7 +155,7 @@ export default function GlobalTillsPage() {
             {/* Traitement des États UX */}
             {isLoading && (
                 <div className="bg-white rounded-2xl border border-slate-100 p-12 flex flex-col items-center justify-center gap-2">
-                    <RefreshCw className="h-6 w-6 animate-spin text-indigo-600" />
+                    <RefreshCw className="h-6 w-6 animate-spin text-green-600" />
                     <p className="text-xs font-medium text-slate-400">Interrogation des journaux des terminaux de caisse...</p>
                 </div>
             )}
@@ -217,7 +217,7 @@ export default function GlobalTillsPage() {
                                         {/* Jauge de sécurité */}
                                         <div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
                                             <div
-                                                className={`h-full transition-all ${isNearingLimit ? 'bg-amber-500' : 'bg-indigo-600'}`}
+                                                className={`h-full transition-all ${isNearingLimit ? 'bg-amber-500' : 'bg-green-600'}`}
                                                 style={{ width: `${Math.min((till.current_balance / till.max_limit) * 100, 100)}%` }}
                                             />
                                         </div>

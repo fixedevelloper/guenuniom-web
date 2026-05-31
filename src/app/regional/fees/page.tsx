@@ -73,7 +73,7 @@ export default function GlobalFeesPage() {
                     <h1 className="text-2xl font-bold text-slate-900">Grilles Tarifaires Multi-Frais</h1>
                     <p className="text-sm text-slate-500 mt-1">Gérez les frais fixes, variables et les taxes par corridor pays.</p>
                 </div>
-                <button onClick={() => setIsModalOpen(true)} className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 px-4 py-2.5 rounded-xl text-sm font-semibold text-white shadow-sm transition-all">
+                <button onClick={() => setIsModalOpen(true)} className="flex items-center gap-2 bg-[#1d9e4b] hover:bg-green-700 px-4 py-2.5 rounded-xl text-sm font-semibold text-white shadow-sm transition-all">
                     <Plus className="w-4 h-4" /> Configurer un Palier
                 </button>
             </div>
@@ -100,14 +100,14 @@ export default function GlobalFeesPage() {
                                         <Globe className="w-4 h-4 text-slate-400" />
                                         <span>{rule.source_country_name}</span>
                                         <span className="text-slate-400">→</span>
-                                        <span className="text-indigo-600">{rule.destination_country_name}</span>
+                                        <span className="text-green-600">{rule.destination_country_name}</span>
                                     </td>
                                     <td className="py-4 px-6 font-mono text-xs uppercase">{rule.transaction_type}</td>
                                     <td className="py-4 px-6 font-mono text-slate-900">
                                         [{new Intl.NumberFormat('fr-FR').format(rule.min_amount)} - {new Intl.NumberFormat('fr-FR').format(rule.max_amount)}]
                                     </td>
                                     <td className="py-4 px-6 font-mono text-emerald-600">{new Intl.NumberFormat('fr-FR').format(rule.fixed_fee)} XAF</td>
-                                    <td className="py-4 px-6 font-mono text-blue-600">{rule.percentage_fee} %</td>
+                                    <td className="py-4 px-6 font-mono text-green-600">{rule.percentage_fee} %</td>
                                     <td className="py-4 px-6 font-mono text-purple-600">{rule.tax_percentage} %</td>
                                     <td className="py-4 px-6 text-center">
                                         <span className={`px-2 py-0.5 rounded text-xs font-bold ${rule.is_active ? 'bg-emerald-50 text-emerald-700' : 'bg-slate-100 text-slate-400'}`}>
@@ -161,8 +161,8 @@ export default function GlobalFeesPage() {
                                 </div>
                             </div>
 
-                            <div className="p-3 bg-indigo-50/50 border border-indigo-100 rounded-xl space-y-3">
-                                <p className="text-xs font-bold text-indigo-900 uppercase tracking-wider">Composantes de la tarification (Cumulables)</p>
+                            <div className="p-3 bg-green-50/50 border border-green-100 rounded-xl space-y-3">
+                                <p className="text-xs font-bold text-green-900 uppercase tracking-wider">Composantes de la tarification (Cumulables)</p>
 
                                 <div className="space-y-1">
                                     <label className="text-[11px] font-bold text-slate-500">FRAIS FIXE DE BASE (XAF)</label>
@@ -181,7 +181,7 @@ export default function GlobalFeesPage() {
 
                         <div className="border-t pt-4 flex gap-3">
                             <button type="button" onClick={() => setIsModalOpen(false)} className="flex-1 py-2.5 border text-slate-700 font-semibold rounded-xl text-sm hover:bg-slate-50">Annuler</button>
-                            <button type="submit" form="fee-form" disabled={createFeeMutation.isPending} className="flex-1 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl text-sm shadow-sm">Déployer la règle</button>
+                            <button type="submit" form="fee-form" disabled={createFeeMutation.isPending} className="flex-1 py-2.5 bg-[#1d9e4b] hover:bg-green-700 text-white font-semibold rounded-xl text-sm shadow-sm">Déployer la règle</button>
                         </div>
                     </div>
                 </div>

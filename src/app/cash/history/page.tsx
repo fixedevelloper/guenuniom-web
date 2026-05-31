@@ -29,7 +29,7 @@ export default function CashHistoryPage() {
             if (filter !== 'all') params.entry_type = filter;
 
             const response = await api.get('/cash/history', { params });
-            return response.data;
+            return response.data.data;
         },
     });
 
@@ -43,7 +43,7 @@ export default function CashHistoryPage() {
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b pb-4">
                 <div>
                     <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
-                        <History className="w-6 h-6 text-blue-600" /> Historique & Journal de Caisse
+                        <History className="w-6 h-6 text-green-600" /> Historique & Journal de Caisse
                     </h2>
                     <p className="text-sm text-muted-foreground">
                         Flux en temps réel et écritures du grand livre comptable pour l'agence.
@@ -79,9 +79,9 @@ export default function CashHistoryPage() {
                         </CardContent>
                     </Card>
 
-                    <Card className="shadow-sm border-blue-100 bg-blue-50/10">
+                    <Card className="shadow-sm border-green-100 bg-green-50/10">
                         <CardContent className="pt-5 flex items-center gap-4">
-                            <div className="p-3 bg-blue-600 rounded-2xl text-white">
+                            <div className="p-3 bg-[#1d9e4b] rounded-2xl text-white">
                                 <History className="w-6 h-6" />
                             </div>
                             <div>

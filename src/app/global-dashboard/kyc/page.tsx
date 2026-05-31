@@ -90,7 +90,7 @@ export default function GlobalKycPage() {
                         >
                             {tab.label}
                             {tab.count > 0 && (
-                                <span className="ml-2 bg-blue-600 text-white text-[10px] px-1.5 py-0.5 rounded-full font-black">{tab.count}</span>
+                                <span className="ml-2 bg-green-600 text-white text-[10px] px-1.5 py-0.5 rounded-full font-black">{tab.count}</span>
                             )}
                         </button>
                     ))}
@@ -103,7 +103,7 @@ export default function GlobalKycPage() {
                         placeholder="Nom, Téléphone ou Référence pièce..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        className="w-full pl-10 pr-4 py-2 bg-slate-50/50 border border-slate-200 rounded-xl text-sm placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                        className="w-full pl-10 pr-4 py-2 bg-slate-50/50 border border-slate-200 rounded-xl text-sm placeholder-slate-400 focus:outline-none focus:border-green-500 focus:bg-white transition-all"
                     />
                 </div>
             </div>
@@ -115,7 +115,7 @@ export default function GlobalKycPage() {
                 <div className="lg:col-span-2 space-y-3">
                     {isLoading ? (
                         <div className="bg-white rounded-2xl border border-slate-100 p-12 flex flex-col items-center justify-center gap-2">
-                            <RefreshCw className="h-6 w-6 animate-spin text-blue-600" />
+                            <RefreshCw className="h-6 w-6 animate-spin text-green-600" />
                             <p className="text-xs font-medium text-slate-400">Chargement des pièces justificatives...</p>
                         </div>
                     ) : customers?.data?.length === 0 ? (
@@ -128,11 +128,11 @@ export default function GlobalKycPage() {
                                 key={customer.uuid}
                                 onClick={() => setSelectedCustomer(customer)}
                                 className={`bg-white p-4 rounded-2xl border transition-all cursor-pointer flex items-center justify-between group ${
-                                    selectedCustomer?.uuid === customer.uuid ? 'border-blue-500 ring-2 ring-blue-50 shadow-md' : 'border-slate-100 hover:border-slate-300 shadow-sm'
+                                    selectedCustomer?.uuid === customer.uuid ? 'border-green-500 ring-2 ring-green-50 shadow-md' : 'border-slate-100 hover:border-slate-300 shadow-sm'
                                 }`}
                             >
                                 <div className="space-y-1">
-                                    <h3 className="font-bold text-slate-900 group-hover:text-blue-600 transition-colors">{customer.first_name} {customer.last_name}</h3>
+                                    <h3 className="font-bold text-slate-900 group-hover:text-green-600 transition-colors">{customer.first_name} {customer.last_name}</h3>
                                     <div className="flex items-center gap-3 text-xs text-slate-400">
                                         <span className="font-mono">{customer.phone_number}</span>
                                         <span>•</span>
@@ -174,7 +174,7 @@ export default function GlobalKycPage() {
                                     </div>
                                     <div className="flex justify-between">
                                         <span className="text-slate-400">Numéro :</span>
-                                        <span className="text-slate-900 font-mono text-blue-600">{selectedCustomer.kyc_document?.document_number}</span>
+                                        <span className="text-slate-900 font-mono text-green-600">{selectedCustomer.kyc_document?.document_number}</span>
                                     </div>
                                     {selectedCustomer.kyc_document?.verified_by_user && (
                                         <div className="flex justify-between border-t border-slate-200/60 pt-2 text-[11px]">
@@ -195,9 +195,9 @@ export default function GlobalKycPage() {
                                     <a
                                         href={`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/storage/${selectedCustomer.kyc_document?.front_image}`}
                                         target="_blank" rel="noreferrer"
-                                        className="flex items-center gap-3 p-2.5 border border-slate-200 hover:border-blue-400 rounded-xl bg-white transition-all group"
+                                        className="flex items-center gap-3 p-2.5 border border-slate-200 hover:border-green-400 rounded-xl bg-white transition-all group"
                                     >
-                                        <div className="p-2 bg-blue-50 text-blue-600 rounded-lg"><FileImage className="w-4 h-4" /></div>
+                                        <div className="p-2 bg-green-50 text-green-600 rounded-lg"><FileImage className="w-4 h-4" /></div>
                                         <span className="text-xs font-bold text-slate-700 truncate flex-1">Afficher le Recto</span>
                                     </a>
                                 </div>
@@ -209,7 +209,7 @@ export default function GlobalKycPage() {
                                         <a
                                             href={`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/storage/${selectedCustomer.kyc_document?.back_image}`}
                                             target="_blank" rel="noreferrer"
-                                            className="flex items-center gap-3 p-2.5 border border-slate-200 hover:border-blue-400 rounded-xl bg-white transition-all group"
+                                            className="flex items-center gap-3 p-2.5 border border-slate-200 hover:border-green-400 rounded-xl bg-white transition-all group"
                                         >
                                             <div className="p-2 bg-purple-50 text-purple-600 rounded-lg"><FileImage className="w-4 h-4" /></div>
                                             <span className="text-xs font-bold text-slate-700 truncate flex-1">Afficher le Verso</span>
@@ -231,7 +231,7 @@ export default function GlobalKycPage() {
                                     <button
                                         disabled={kycMutation.isPending}
                                         onClick={() => kycMutation.mutate({ customerUuid: selectedCustomer.uuid, action: 'approve' })}
-                                        className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-xl text-xs font-bold transition-all shadow-sm disabled:opacity-50"
+                                        className="flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white py-2.5 rounded-xl text-xs font-bold transition-all shadow-sm disabled:opacity-50"
                                     >
                                         <UserCheck className="w-4 h-4" /> Approuver
                                     </button>

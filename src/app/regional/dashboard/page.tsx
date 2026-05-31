@@ -49,7 +49,7 @@ export default function RegionalAdminDashboardPage() {
     if (isLoading) {
         return (
             <div className="flex flex-col items-center justify-center min-h-[50vh] space-y-4">
-                <Loader2 className="w-8 h-8 animate-spin text-indigo-600" />
+                <Loader2 className="w-8 h-8 animate-spin text-green-600" />
                 <p className="text-xs font-mono font-bold text-slate-500 uppercase tracking-wider">
                     Calcul des balances consolidées du réseau...
                 </p>
@@ -111,7 +111,7 @@ export default function RegionalAdminDashboardPage() {
                 <Card className="border-slate-200 shadow-sm rounded-2xl overflow-hidden">
                     <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
                         <CardTitle className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Points de Vente / Agences</CardTitle>
-                        <div className="p-1.5 bg-indigo-50 rounded-lg text-indigo-600"><Building2 className="w-4 h-4" /></div>
+                        <div className="p-1.5 bg-green-50 rounded-lg text-green-600"><Building2 className="w-4 h-4" /></div>
                     </CardHeader>
                     <CardContent>
                         <div className="text-xl font-black text-slate-900 font-mono">{metrics.agencies_count}</div>

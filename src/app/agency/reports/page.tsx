@@ -102,7 +102,7 @@ export default function AgencyReportsPage() {
                         <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Volume Dépôts</span>
                         <span className="text-lg font-black text-slate-900 font-mono">{formatCurrency(metrics.total_cash_in)}</span>
                     </div>
-                    <div className="p-2.5 bg-blue-50 text-blue-600 rounded-xl border border-blue-100"><ArrowDownLeft className="w-5 h-5" /></div>
+                    <div className="p-2.5 bg-green-50 text-green-600 rounded-xl border border-green-100"><ArrowDownLeft className="w-5 h-5" /></div>
                 </div>
 
                 <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
@@ -193,11 +193,11 @@ export default function AgencyReportsPage() {
                                         </div>
                                         {/* Barre de répartition visuelle */}
                                         <div className="w-full h-3 bg-slate-100 rounded-full overflow-hidden flex">
-                                            <div style={{ width: `${inPercent}%` }} className="h-full bg-blue-500" title={`Dépôts: ${inPercent.toFixed(1)}%`} />
+                                            <div style={{ width: `${inPercent}%` }} className="h-full bg-green-500" title={`Dépôts: ${inPercent.toFixed(1)}%`} />
                                             <div style={{ width: `${outPercent}%` }} className="h-full bg-amber-500" title={`Retraits: ${outPercent.toFixed(1)}%`} />
                                         </div>
                                         <div className="flex justify-between text-[10px] text-slate-400 font-mono font-bold">
-                                            <span className="text-blue-600">IN: {formatCurrency(till.cash_in_volume)}</span>
+                                            <span className="text-green-600">IN: {formatCurrency(till.cash_in_volume)}</span>
                                             <span className="text-amber-600">OUT: {formatCurrency(till.cash_out_volume)}</span>
                                         </div>
                                     </div>

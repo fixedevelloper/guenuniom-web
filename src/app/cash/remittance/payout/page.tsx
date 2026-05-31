@@ -33,9 +33,7 @@ import {TillSessionGuard} from "../../../../components/guards/till-session-guard
 const payoutFormSchema = z.object({
     reference: z.string().min(5, "Le code MTCN est requis"),
     secure_code: z.string().min(1, "Le code secret d'impression/sécurité est requis"),
-    recipient_id_type: z.enum(['cni', 'passport', 'recepisse', 'carte_sejour'], {
-        required_error: "Le type de pièce est requis",
-    }),
+    recipient_id_type: z.enum(['cni', 'passport', 'recepisse', 'carte_sejour']),
     recipient_id_number: z.string().min(3, "Le numéro de pièce est requis").max(150),
     recipient_id_expiry: z.string().refine((val) => !isNaN(Date.parse(val)) && new Date(val) > new Date(), {
         message: "La pièce présentée doit être en cours de validité",
@@ -143,7 +141,7 @@ export default function PayoutRemittancePage() {
 
             {/* BARRE DE RECHERCHE INITIALE */}
             <div className="space-y-4">
-                <Card className="border-blue-100 bg-gradient-to-r from-blue-50/40 via-transparent to-transparent shadow-sm">
+                <Card className="border-green-100 bg-gradient-to-r from-green-50/40 via-transparent to-transparent shadow-sm">
                     <CardContent className="pt-6">
                         <form onSubmit={onSearchTrigger} className="flex flex-col sm:flex-row gap-3 items-end">
                             <div className="flex-1 space-y-1.5">
@@ -162,7 +160,7 @@ export default function PayoutRemittancePage() {
                             <Button
                                 type="submit"
                                 size="lg"
-                                className="bg-blue-600 hover:bg-blue-700 text-xs font-bold uppercase h-11 rounded-xl px-6 gap-2"
+                                className="bg-[#1d9e4b] hover:bg-bg-[#87c540] text-xs font-bold uppercase h-11 rounded-xl px-6 gap-2"
                                 disabled={searchMutation.isPending || !mtcnSearch.trim()}
                             >
                                 {searchMutation.isPending ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}

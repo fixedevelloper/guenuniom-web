@@ -95,7 +95,7 @@ export default function GlobalTransactionsPage() {
                         placeholder="Rechercher par référence, expéditeur, destinataire..."
                         value={search}
                         onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-                        className="w-full pl-10 pr-4 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm font-medium placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                        className="w-full pl-10 pr-4 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm font-medium placeholder-slate-400 focus:outline-none focus:border-green-500 focus:bg-white transition-all"
                     />
                 </div>
 
@@ -105,7 +105,7 @@ export default function GlobalTransactionsPage() {
                         <select
                             value={status}
                             onChange={(e) => { setStatus(e.target.value); setPage(1); }}
-                            className="w-full pl-10 pr-8 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 focus:outline-none focus:border-blue-500 focus:bg-white appearance-none cursor-pointer transition-all"
+                            className="w-full pl-10 pr-8 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 focus:outline-none focus:border-green-500 focus:bg-white appearance-none cursor-pointer transition-all"
                         >
                             <option value="all">Tous les statuts</option>
                             <option value="completed">Succès</option>
@@ -119,7 +119,7 @@ export default function GlobalTransactionsPage() {
             {/* État de chargement */}
             {isLoading && (
                 <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-12 flex flex-col items-center justify-center gap-3">
-                    <RefreshCw className="h-8 w-8 animate-spin text-blue-600" />
+                    <RefreshCw className="h-8 w-8 animate-spin text-green-600" />
                     <p className="text-sm font-medium text-slate-500">Chargement de l'historique général...</p>
                 </div>
             )}
@@ -128,7 +128,7 @@ export default function GlobalTransactionsPage() {
             {isError && (
                 <div className="bg-white rounded-2xl border border-rose-100 shadow-sm p-8 text-center space-y-3">
                     <p className="text-rose-600 font-semibold">Une erreur est survenue lors de la récupération des flux financiers.</p>
-                    <button onClick={() => refetch()} className="bg-blue-600 text-white px-5 py-2 rounded-xl text-sm font-medium hover:bg-blue-700 transition-colors">
+                    <button onClick={() => refetch()} className="bg-green-600 text-white px-5 py-2 rounded-xl text-sm font-medium hover:bg-green-700 transition-colors">
                         Réessayer
                     </button>
                 </div>
@@ -170,7 +170,7 @@ export default function GlobalTransactionsPage() {
                                         {/* Flux géographique */}
                                         <td className="py-4 px-6">
                                             <div className="flex items-center gap-2 text-xs font-bold text-slate-800">
-                          <span className="bg-blue-50 text-blue-700 border border-blue-100/80 px-2 py-0.5 rounded">
+                          <span className="bg-green-50 text-green-700 border border-green-100/80 px-2 py-0.5 rounded">
                             {tx.sender_country?.code || 'CM'}
                           </span>
                                                 <span className="text-slate-400 font-normal">➔</span>

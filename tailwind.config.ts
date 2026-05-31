@@ -12,6 +12,12 @@ const config: Config = {
                 mono: ["var(--font-geist-mono)", "monospace"],
                 geist: ["var(--font-geist-sans)", "sans-serif"],
             },
+            colors: {
+                brand: {
+                    primary: '#1d9e4b',
+                    secondary: '#87c540',
+                }
+            }
         },
     },
     plugins: [],

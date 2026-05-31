@@ -33,53 +33,62 @@ import {TillSessionGuard} from "../../../../components/guards/till-session-guard
 
 // Schéma de validation aligné strictement sur les règles de validation du backend Laravel
 const remittanceFormSchema = z.object({
-    amount: z.number({ invalid_type_error: "Le montant doit être un nombre numérique" })
+    amount: z.number()
         .min(100, "Le montant minimum pour un transfert est de 100 XAF"),
 
     // Informations obligatoires de l'expéditeur (KYC complet)
     sender_first_name: z.string().min(3, "Le prénom doit contenir au moins 3 caractères").max(150),
     sender_last_name: z.string().min(3, "Le nom doit contenir au moins 3 caractères").max(150),
     sender_phone: z.string().min(3, "Numéro de téléphone expéditeur requis").max(150),
-    sender_id_type: z.enum(['cni', 'passport', 'recepisse', 'carte_sejour'], {
-        required_error: "Sélectionnez le type de pièce d'identité",
-    }),
+    sender_id_type: z.enum(
+        ['cni', 'passport', 'recepisse', 'carte_sejour']
+    ),
     sender_id_number: z.string().min(3, "Le numéro de pièce est requis").max(150),
     sender_id_expiry: z.string().refine((val) => !isNaN(Date.parse(val)) && new Date(val) > new Date(), {
         message: "La pièce d'identité doit posséder une date d'expiration future",
     }),
     sender_email: z.string().email("Format email invalide").max(150).optional().or(z.literal('')),
-    sender_city_id: z.string({ required_error: "La ville de résidence est obligatoire" }),
+    sender_city_id: z
+        .string()
+        .min(1, "La ville de résidence est obligatoire"),
     sender_address: z.string().min(3, "L'adresse résidentielle est requise").max(255),
 
     // Informations du bénéficiaire
     recipient_name: z.string().min(3, "Le nom du bénéficiaire doit contenir au moins 3 caractères").max(150),
     recipient_phone: z.string().min(3, "Le téléphone de destination est requis").max(20),
     recipient_email: z.string().email("Format email invalide").max(150).optional().or(z.literal('')),
-    destination_country_id: z.string({ required_error: "Veuillez sélectionner le pays de destination" }),
+    destination_country_id: z
+        .string()
+        .min(1, "Veuillez sélectionner le pays de destination"),
 });
 
-type RemittanceFormValues = z.infer<typeof remittanceFormSchema>;
-
+//type RemittanceFormValues = z.infer<typeof remittanceFormSchema>;
+type RemittanceFormInput = z.input<typeof remittanceFormSchema>;
+type RemittanceFormValues = z.output<typeof remittanceFormSchema>;
 export default function SendRemittancePage() {
     const [quoteData, setQuoteData] = useState<any>(null);
 
-    const form = useForm<RemittanceFormValues>({
+    const form = useForm<
+        RemittanceFormInput,
+        any,
+        RemittanceFormValues
+        >({
         resolver: zodResolver(remittanceFormSchema),
         defaultValues: {
             amount: 0,
             sender_first_name: '',
             sender_last_name: '',
             sender_phone: '',
-            sender_id_type: undefined,
+            sender_id_type: undefined as any,
             sender_id_number: '',
             sender_id_expiry: '',
             sender_email: '',
-            sender_city_id: undefined,
+            sender_city_id: '',
             sender_address: '',
             recipient_name: '',
             recipient_phone: '',
             recipient_email: '',
-            destination_country_id: undefined,
+            destination_country_id: '',
         },
     });
 
@@ -177,7 +186,7 @@ export default function SendRemittancePage() {
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-200/60 pb-5">
                 <div className="space-y-1">
                     <h2 className="text-xl font-black text-slate-900 tracking-tight flex items-center gap-2.5">
-                        <span className="p-2 bg-blue-500/10 text-blue-600 rounded-xl border border-blue-500/20">
+                        <span className="p-2 bg-green-500/10 text-green-600 rounded-xl border border-green-500/20">
                             <ArrowUpRight className="w-5 h-5" />
                         </span>
                         Émettre un Transfert d'Argent
@@ -189,7 +198,7 @@ export default function SendRemittancePage() {
 
                 {/* Badge d'état de conformité */}
                 <div className="flex items-center gap-1.5 self-start sm:self-center bg-slate-100 border border-slate-200/80 px-2.5 py-1 rounded-lg text-[10px] font-bold text-slate-600 uppercase font-mono tracking-wider">
-                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" /> AML/CFT Compliant
+                    <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" /> AML/CFT Compliant
                 </div>
             </div>
 
@@ -217,7 +226,7 @@ export default function SendRemittancePage() {
                                             <FormItem>
                                                 <FormLabel className="text-[11px] font-bold text-slate-600 uppercase tracking-wide">Prénom</FormLabel>
                                                 <FormControl>
-                                                    <Input placeholder="Ex: Jean-Pierre" {...field} className="rounded-xl border-slate-200 focus-visible:ring-blue-500 h-10 text-xs" />
+                                                    <Input placeholder="Ex: Jean-Pierre" {...field} className="rounded-xl border-slate-200 focus-visible:ring-green-500 h-10 text-xs" />
                                                 </FormControl>
                                                 <FormMessage className="text-[10px] font-semibold" />
                                             </FormItem>
@@ -230,7 +239,7 @@ export default function SendRemittancePage() {
                                             <FormItem>
                                                 <FormLabel className="text-[11px] font-bold text-slate-600 uppercase tracking-wide">Nom de famille</FormLabel>
                                                 <FormControl>
-                                                    <Input placeholder="Ex: Mbah" {...field} className="rounded-xl border-slate-200 focus-visible:ring-blue-500 h-10 text-xs" />
+                                                    <Input placeholder="Ex: Mbah" {...field} className="rounded-xl border-slate-200 focus-visible:ring-green-500 h-10 text-xs" />
                                                 </FormControl>
                                                 <FormMessage className="text-[10px] font-semibold" />
                                             </FormItem>
@@ -248,7 +257,7 @@ export default function SendRemittancePage() {
                                                 <FormControl>
                                                     <div className="relative">
                                                         <Smartphone className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
-                                                        <Input placeholder="6xx xxx xxx" {...field} className="pl-9 rounded-xl border-slate-200 focus-visible:ring-blue-500 h-10 text-xs font-mono font-medium" />
+                                                        <Input placeholder="6xx xxx xxx" {...field} className="pl-9 rounded-xl border-slate-200 focus-visible:ring-green-500 h-10 text-xs font-mono font-medium" />
                                                     </div>
                                                 </FormControl>
                                                 <FormMessage className="text-[10px] font-semibold" />
@@ -262,7 +271,7 @@ export default function SendRemittancePage() {
                                             <FormItem>
                                                 <FormLabel className="text-[11px] font-bold text-slate-600 uppercase tracking-wide">Adresse Email <span className="text-slate-400 font-normal lowercase">(Optionnel)</span></FormLabel>
                                                 <FormControl>
-                                                    <Input placeholder="expediteur@gmail.com" {...field} className="rounded-xl border-slate-200 focus-visible:ring-blue-500 h-10 text-xs" />
+                                                    <Input placeholder="expediteur@gmail.com" {...field} className="rounded-xl border-slate-200 focus-visible:ring-green-500 h-10 text-xs" />
                                                 </FormControl>
                                                 <FormMessage className="text-[10px] font-semibold" />
                                             </FormItem>
@@ -308,7 +317,7 @@ export default function SendRemittancePage() {
                                                 <FormControl>
                                                     <div className="relative">
                                                         <FileText className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
-                                                        <Input placeholder="Ex: 100349..." {...field} className="pl-9 font-mono font-bold uppercase rounded-xl border-slate-200 focus-visible:ring-blue-500 h-10 text-xs tracking-wider" />
+                                                        <Input placeholder="Ex: 100349..." {...field} className="pl-9 font-mono font-bold uppercase rounded-xl border-slate-200 focus-visible:ring-green-500 h-10 text-xs tracking-wider" />
                                                     </div>
                                                 </FormControl>
                                                 <FormMessage className="text-[10px] font-semibold" />
@@ -324,7 +333,7 @@ export default function SendRemittancePage() {
                                                 <FormControl>
                                                     <div className="relative">
                                                         <Calendar className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
-                                                        <Input type="date" {...field} className="pl-9 rounded-xl border-slate-200 focus-visible:ring-blue-500 h-10 text-xs font-medium text-slate-700" />
+                                                        <Input type="date" {...field} className="pl-9 rounded-xl border-slate-200 focus-visible:ring-green-500 h-10 text-xs font-medium text-slate-700" />
                                                     </div>
                                                 </FormControl>
                                                 <FormMessage className="text-[10px] font-semibold" />
@@ -367,7 +376,7 @@ export default function SendRemittancePage() {
                                                 <FormControl>
                                                     <div className="relative">
                                                         <MapPin className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
-                                                        <Input placeholder="Quartier, Rue, Précisions de localisation physique" {...field} className="pl-9 rounded-xl border-slate-200 focus-visible:ring-blue-500 h-10 text-xs" />
+                                                        <Input placeholder="Quartier, Rue, Précisions de localisation physique" {...field} className="pl-9 rounded-xl border-slate-200 focus-visible:ring-green-500 h-10 text-xs" />
                                                     </div>
                                                 </FormControl>
                                                 <FormMessage className="text-[10px] font-semibold" />
@@ -382,7 +391,7 @@ export default function SendRemittancePage() {
                         <Card className="shadow-sm border-slate-200/80 rounded-2xl overflow-hidden transition-all hover:shadow-md/50">
                             <CardHeader className="bg-slate-50/50 border-b border-slate-100 py-4 px-5">
                                 <CardTitle className="text-[11px] font-extrabold tracking-widest uppercase text-slate-500 flex items-center gap-2">
-                                    <Globe className="w-3.5 h-3.5 text-blue-500" /> Destination & Paramètres Financiers
+                                    <Globe className="w-3.5 h-3.5 text-green-500" /> Destination & Paramètres Financiers
                                 </CardTitle>
                                 <CardDescription className="text-[11px] text-slate-400 mt-0.5">Configuration du corridor monétaire et coordonnées du récepteur.</CardDescription>
                             </CardHeader>
@@ -395,7 +404,7 @@ export default function SendRemittancePage() {
                                             <FormItem>
                                                 <FormLabel className="text-[11px] font-bold text-slate-600 uppercase tracking-wide">Nom Complet du Bénéficiaire</FormLabel>
                                                 <FormControl>
-                                                    <Input placeholder="Ex: Marie Laurence" {...field} className="rounded-xl border-slate-200 focus-visible:ring-blue-500 h-10 text-xs font-semibold" />
+                                                    <Input placeholder="Ex: Marie Laurence" {...field} className="rounded-xl border-slate-200 focus-visible:ring-green-500 h-10 text-xs font-semibold" />
                                                 </FormControl>
                                                 <FormMessage className="text-[10px] font-semibold" />
                                             </FormItem>
@@ -410,7 +419,7 @@ export default function SendRemittancePage() {
                                                 <FormControl>
                                                     <div className="relative">
                                                         <Smartphone className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
-                                                        <Input placeholder="Ex: +241 07 xx xx xx" {...field} className="pl-9 rounded-xl border-slate-200 focus-visible:ring-blue-500 h-10 text-xs font-mono font-medium" />
+                                                        <Input placeholder="Ex: +241 07 xx xx xx" {...field} className="pl-9 rounded-xl border-slate-200 focus-visible:ring-green-500 h-10 text-xs font-mono font-medium" />
                                                     </div>
                                                 </FormControl>
                                                 <FormMessage className="text-[10px] font-semibold" />
@@ -427,7 +436,7 @@ export default function SendRemittancePage() {
                                             <FormItem>
                                                 <FormLabel className="text-[11px] font-bold text-slate-600 uppercase tracking-wide">Email <span className="text-slate-400 font-normal lowercase">(Optionnel)</span></FormLabel>
                                                 <FormControl>
-                                                    <Input placeholder="beneficiaire@gmail.com" {...field} className="rounded-xl border-slate-200 focus-visible:ring-blue-500 h-10 text-xs" />
+                                                    <Input placeholder="beneficiaire@gmail.com" {...field} className="rounded-xl border-slate-200 focus-visible:ring-green-500 h-10 text-xs" />
                                                 </FormControl>
                                                 <FormMessage className="text-[10px] font-semibold" />
                                             </FormItem>
@@ -469,7 +478,7 @@ export default function SendRemittancePage() {
                                                         <Input
                                                             type="number"
                                                             placeholder="Ex: 50000"
-                                                            className="pl-9 pr-20 font-mono font-black text-slate-900 rounded-xl border-slate-200 focus-visible:ring-blue-500 h-10 text-xs tracking-tight"
+                                                            className="pl-9 pr-20 font-mono font-black text-slate-900 rounded-xl border-slate-200 focus-visible:ring-green-500 h-10 text-xs tracking-tight"
                                                             value={field.value || ''}
                                                             onChange={(e) => field.onChange(Number(e.target.value))}
                                                         />
@@ -478,7 +487,7 @@ export default function SendRemittancePage() {
                                                             size="sm"
                                                             onClick={() => quoteMutation.mutate()}
                                                             disabled={quoteMutation.isPending || !field.value}
-                                                            className="absolute right-1 top-1 h-8 text-[10px] font-black uppercase tracking-wider bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors shadow-sm px-2.5"
+                                                            className="absolute right-1 top-1 h-8 text-[10px] font-black uppercase tracking-wider bg-[#1d9e4b] hover:bg-bg-[#87c540] text-white rounded-lg transition-colors shadow-sm px-2.5"
                                                         >
                                                             {quoteMutation.isPending ? <RefreshCw className="w-3 h-3 animate-spin" /> : 'Calculer'}
                                                         </Button>
@@ -498,7 +507,7 @@ export default function SendRemittancePage() {
                         <Card className="bg-slate-950 text-white shadow-xl border border-slate-900 rounded-2xl overflow-hidden">
                             <CardHeader className="bg-white/[0.02] border-b border-white/5 py-4 px-5">
                                 <CardTitle className="text-[10px] font-black uppercase tracking-widest text-slate-400 flex items-center gap-2">
-                                    <Scale className="w-3.5 h-3.5 text-blue-400" /> Ticket Financier Réglementaire
+                                    <Scale className="w-3.5 h-3.5 text-green-400" /> Ticket Financier Réglementaire
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="p-5 space-y-5">
@@ -531,9 +540,9 @@ export default function SendRemittancePage() {
                                             </p>
                                         </div>
 
-                                        <div className="bg-blue-500/10 p-3.5 rounded-xl border border-blue-500/20 space-y-1">
-                                            <p className="text-[9px] text-blue-400 uppercase tracking-widest font-black">À Percevoir Net en Caisse :</p>
-                                            <p className="text-2xl font-mono font-black text-blue-400 tracking-tight">
+                                        <div className="bg-green-500/10 p-3.5 rounded-xl border border-green-500/20 space-y-1">
+                                            <p className="text-[9px] text-green-400 uppercase tracking-widest font-black">À Percevoir Net en Caisse :</p>
+                                            <p className="text-2xl font-mono font-black text-green-400 tracking-tight">
                                                 {new Intl.NumberFormat('fr-FR').format(quoteData.total_payable ?? quoteData.total_amount_required)}
                                                 <span className="text-xs font-sans text-white font-medium ml-2">{quoteData.sender_currency ?? 'XAF'}</span>
                                             </p>
@@ -545,7 +554,7 @@ export default function SendRemittancePage() {
                                             <Scale className="w-4 h-4 text-slate-500" />
                                         </div>
                                         <p className="text-[11px] text-slate-400 max-w-[200px] mx-auto leading-relaxed font-medium">
-                                            Saisissez un montant puis cliquez sur <span className="text-blue-400 font-bold">"Calculer"</span> pour générer le décompte comptable.
+                                            Saisissez un montant puis cliquez sur <span className="text-green-400 font-bold">"Calculer"</span> pour générer le décompte comptable.
                                         </p>
                                     </div>
                                 )}

@@ -64,7 +64,7 @@ export default function GlobalLogsPage() {
 
     // Configuration sémantique de l'enum de sévérité de votre migration
     const severityConfig: Record<string, { label: string; bg: string; text: string; icon: any }> = {
-        info: { label: 'Information', bg: 'bg-blue-50 border-blue-100', text: 'text-blue-700', icon: Info },
+        info: { label: 'Information', bg: 'bg-green-50 border-green-100', text: 'text-green-700', icon: Info },
         warning: { label: 'Avertissement', bg: 'bg-amber-50 border-amber-100', text: 'text-amber-700', icon: AlertTriangle },
         critical: { label: 'Alerte Critique', bg: 'bg-rose-50 border-rose-100', text: 'text-rose-700', icon: ShieldAlert },
     };
@@ -100,7 +100,7 @@ export default function GlobalLogsPage() {
                         placeholder="Rechercher par message, IP, mot-clé..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        className="w-full pl-10 pr-4 py-2 bg-slate-50/50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                        className="w-full pl-10 pr-4 py-2 bg-slate-50/50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-green-500 focus:bg-white transition-all"
                     />
                 </div>
 
@@ -150,7 +150,7 @@ export default function GlobalLogsPage() {
             {/* Chargement */}
             {isLoading && (
                 <div className="bg-white rounded-2xl border border-slate-100 p-12 flex flex-col items-center justify-center gap-2">
-                    <Server className="h-6 w-6 animate-pulse text-blue-600" />
+                    <Server className="h-6 w-6 animate-pulse text-green-600" />
                     <p className="text-xs font-medium text-slate-400 font-mono">Lecture de la table system_audit_logs...</p>
                 </div>
             )}

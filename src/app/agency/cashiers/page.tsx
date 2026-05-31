@@ -227,7 +227,7 @@ export default function AgencyCashiersPage() {
                                                         setOperationType('credit');
                                                         setIsOperationModalOpen(true);
                                                     }}
-                                                    className="inline-flex items-center gap-1 text-xs font-bold px-2.5 py-1.5 bg-blue-50 text-blue-700 border border-blue-100 rounded-lg hover:bg-blue-100 transition-all disabled:opacity-40"
+                                                    className="inline-flex items-center gap-1 text-xs font-bold px-2.5 py-1.5 bg-green-50 text-green-700 border border-green-100 rounded-lg hover:bg-green-100 transition-all disabled:opacity-40"
                                                 >
                                                     <ArrowDownLeft className="w-3 h-3" /> Approvisionner
                                                 </button>
@@ -311,7 +311,7 @@ export default function AgencyCashiersPage() {
                             <div className="flex gap-3 pt-2">
                                 <button type="button" onClick={() => setIsOperationModalOpen(false)} className="flex-1 py-2 border text-slate-700 font-semibold rounded-xl text-sm hover:bg-slate-50">Annuler l'opération</button>
                                 <button type="submit" disabled={cashOperationMutation.isPending} className={`flex-1 py-2 text-white font-semibold rounded-xl text-sm shadow-sm ${
-                                    operationType === 'credit' ? 'bg-blue-600 hover:bg-blue-700' : 'bg-amber-600 hover:bg-amber-700'
+                                    operationType === 'credit' ? 'bg-green-600 hover:bg-green-700' : 'bg-amber-600 hover:bg-amber-700'
                                 }`}>
                                     Confirmer le transfert
                                 </button>

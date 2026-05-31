@@ -112,7 +112,7 @@ export default function GlobalFeesPage() {
                     </button>
                     <button
                         onClick={() => setIsModalOpen(true)}
-                        className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-xl text-sm font-semibold shadow-md shadow-blue-200 transition-all"
+                        className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2.5 rounded-xl text-sm font-semibold shadow-md shadow-green-200 transition-all"
                     >
                         <Plus className="w-4 h-4" /> Ajouter une règle tarifaire
                     </button>
@@ -128,7 +128,7 @@ export default function GlobalFeesPage() {
                         placeholder="Rechercher par pays ou type (ex: CM, transfer, merchant_payment...)"
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        className="w-full pl-10 pr-4 py-2 bg-slate-50/50 border border-slate-200 rounded-xl text-sm placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                        className="w-full pl-10 pr-4 py-2 bg-slate-50/50 border border-slate-200 rounded-xl text-sm placeholder-slate-400 focus:outline-none focus:border-green-500 focus:bg-white transition-all"
                     />
                 </div>
             </div>
@@ -136,7 +136,7 @@ export default function GlobalFeesPage() {
             {/* Chargement */}
             {isLoading && (
                 <div className="bg-white rounded-2xl border border-slate-100 p-12 flex flex-col items-center justify-center gap-2">
-                    <RefreshCw className="h-6 w-6 animate-spin text-blue-600" />
+                    <RefreshCw className="h-6 w-6 animate-spin text-green-600" />
                     <p className="text-xs font-medium text-slate-400">Indexation de la table des frais...</p>
                 </div>
             )}
@@ -172,7 +172,7 @@ export default function GlobalFeesPage() {
                                         {/* Corridor géographique harmonisé */}
                                         <td className="py-4 px-6">
                                             <div className="flex items-center gap-2 text-xs font-bold">
-                                                <span className="bg-blue-50 text-blue-700 border border-blue-100 px-2 py-0.5 rounded uppercase">{fee.source_country?.code || 'CM'}</span>
+                                                <span className="bg-green-50 text-green-700 border border-green-100 px-2 py-0.5 rounded uppercase">{fee.source_country?.code || 'CM'}</span>
                                                 <ArrowRight className="w-3 h-3 text-slate-400" />
                                                 <span className="bg-purple-50 text-purple-700 border border-purple-100 px-2 py-0.5 rounded uppercase">{fee.destination_country?.code || 'CG'}</span>
                                             </div>
@@ -189,7 +189,7 @@ export default function GlobalFeesPage() {
                                         </td>
 
                                         {/* Frais pourcentage */}
-                                        <td className="py-4 px-6 text-right text-blue-600 font-bold">
+                                        <td className="py-4 px-6 text-right text-green-600 font-bold">
                                             {parseFloat(fee.percentage_fee) > 0 ? `${fee.percentage_fee} %` : '—'}
                                         </td>
 
@@ -210,7 +210,7 @@ export default function GlobalFeesPage() {
                                             <button
                                                 onClick={() => toggleMutation.mutate(fee.uuid)}
                                                 disabled={toggleMutation.isPending}
-                                                className={`p-1 rounded-lg transition-colors ${fee.is_active ? 'text-blue-600 hover:bg-blue-50' : 'text-slate-400 hover:bg-slate-100'}`}
+                                                className={`p-1 rounded-lg transition-colors ${fee.is_active ? 'text-green-600 hover:bg-green-50' : 'text-slate-400 hover:bg-slate-100'}`}
                                             >
                                                 {fee.is_active ? <ToggleRight className="w-6 h-6" /> : <ToggleLeft className="w-6 h-6" />}
                                             </button>
@@ -283,7 +283,7 @@ export default function GlobalFeesPage() {
                                 </div>
                                 <div className="space-y-1">
                                     <label className="text-xs font-bold text-slate-500 flex items-center gap-1"><Percent className="w-3 h-3" /> Pourcentage (%)</label>
-                                    <input type="number" step="0.01" placeholder="0.00" value={formData.percentage_fee} onChange={(e) => setFormData({...formData, percentage_fee: e.target.value})} className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-semibold text-blue-600" />
+                                    <input type="number" step="0.01" placeholder="0.00" value={formData.percentage_fee} onChange={(e) => setFormData({...formData, percentage_fee: e.target.value})} className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-semibold text-green-600" />
                                 </div>
                             </div>
 
@@ -296,7 +296,7 @@ export default function GlobalFeesPage() {
                             {/* Boutons */}
                             <div className="flex gap-3 pt-2">
                                 <button type="button" onClick={() => setIsModalOpen(false)} className="flex-1 border border-slate-200 text-slate-700 font-bold py-2.5 rounded-xl text-xs hover:bg-slate-50">Annuler</button>
-                                <button type="submit" disabled={createMutation.isPending} className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-xl text-xs shadow-md">
+                                <button type="submit" disabled={createMutation.isPending} className="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 rounded-xl text-xs shadow-md">
                                     {createMutation.isPending ? 'Sauvegarde...' : 'Appliquer le tarif'}
                                 </button>
                             </div>

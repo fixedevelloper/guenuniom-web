@@ -58,11 +58,11 @@ export default function CashierLayout({
         return (
             <div className="min-h-screen flex flex-col items-center justify-center bg-slate-950 space-y-4">
                 <div className="relative flex items-center justify-center">
-                    <Loader2 className="w-12 h-12 animate-spin text-blue-500 z-10" />
-                    <div className="absolute w-16 h-16 bg-blue-500/10 rounded-full blur-xl animate-pulse" />
+                    <Loader2 className="w-12 h-12 animate-spin text-green-500 z-10" />
+                    <div className="absolute w-16 h-16 bg-green-500/10 rounded-full blur-xl animate-pulse" />
                 </div>
                 <div className="text-center space-y-1">
-                    <p className="text-sm font-black tracking-widest text-white uppercase">FINTX CORE</p>
+                    <p className="text-sm font-black tracking-widest text-white uppercase">GUEN'S UNION</p>
                     <p className="text-[10px] font-mono font-medium text-slate-500 uppercase tracking-wider">
                         Vérification des écritures de caisse...
                     </p>
@@ -77,12 +77,12 @@ export default function CashierLayout({
     const navigation = [
         { name: 'Nouveau Dépôt / Versement', href: '/cash/remittance/send', icon: ArrowUpRight, color: 'text-emerald-500 bg-emerald-500/10' },
         { name: 'Nouveau Retrait', href: '/cash/remittance/payout', icon: ArrowDownLeft, color: 'text-amber-500 bg-amber-500/10' },
-        { name: 'Historique des opérations', href: '/cash/history', icon: History, color: 'text-blue-500 bg-blue-500/10' },
+        { name: 'Historique des opérations', href: '/cash/history', icon: History, color: 'text-green-500 bg-green-500/10' },
         { name: 'Ouverture & Clôture', href: '/cash/session', icon: Clock, color: 'text-purple-500 bg-purple-500/10' },
     ];
 
     return (
-        <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col antialiased selection:bg-blue-500 selection:text-white">
+        <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col antialiased selection:bg-green-500 selection:text-white">
 
             {/* ─── HEADER SÉCURISÉ EXTRA-LARGE ─── */}
             <header className="bg-slate-950/95 backdrop-blur-md text-white border-b border-slate-800 shadow-sm z-40 sticky top-0 px-6 py-3">
@@ -99,20 +99,36 @@ export default function CashierLayout({
                             </button>
                         )}
                         <div className="flex flex-col">
-                            <span className="font-black text-sm tracking-tight text-white flex items-center gap-2">
-                                <span className="bg-blue-600 p-1 rounded-lg text-white">
-                                    <ShieldCheck className="w-4 h-4" />
-                                </span>
-                                FINTX <span className="text-blue-500 font-medium">CASH</span>
-                            </span>
+                            {/* Brand Header */}
+{/*                            <span className="font-black text-sm tracking-tight text-white flex items-center gap-2">
+        <span className="p-1 rounded-lg text-white flex items-center justify-center">
+            <img
+                src="/icon.png"
+                alt="Guen's Union Logo"
+                className="w-8 h-8 object-contain"
+            />
+        </span>
+        GUEN'S <span className="text-green-500 font-medium">UNION</span>
+    </span>*/}
+                            <img
+                                src="/logo.png"
+                                alt="Guen's Union Logo"
+                                className="w-50 h-20 object-contain"
+                            />
+                            {/* Session Metadata */}
                             <div className="flex items-center flex-wrap gap-x-2 text-[11px] font-semibold text-slate-400 mt-1">
+                                {/* Agency Badge */}
                                 <span className="flex items-center gap-1 bg-slate-900 border border-slate-800/60 px-2 py-0.5 rounded-md text-slate-300">
-                                    <Building className="w-3 h-3 text-blue-500" /> {sessionData?.agency_name}
-                                </span>
+            <Building className="w-3 h-3 text-green-500" />
+                                    {sessionData?.agency_name || "Unknown Agency"}
+        </span>
+
+                                {/* Conditional Till Badge */}
                                 {isOpen && (
                                     <span className="flex items-center gap-1 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded-md text-amber-400 font-mono">
-                                        <MonitorPlay className="w-3 h-3" /> {sessionData?.till_name}
-                                    </span>
+                <MonitorPlay className="w-3 h-3" />
+                                        {sessionData?.till_name || "Unknown Till"}
+            </span>
                                 )}
                             </div>
                         </div>
@@ -166,7 +182,7 @@ export default function CashierLayout({
                         <aside className={`
                             fixed inset-y-0 left-0 transform ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} 
                             lg:relative lg:translate-x-0 lg:flex lg:flex-col
-                            transition-transform duration-200 ease-in-out z-30 w-72 bg-white border-r border-slate-200/80 pt-24 lg:pt-8 pr-6 pl-2 space-y-6
+                            transition-transform duration-200 ease-in-out z-30 w-72 bg-white border-r border-slate-200/80 pt-34 lg:pt-8 pr-6 pl-2 space-y-6
                         `}>
                             <div className="space-y-2">
                                 <p className="px-3 text-[10px] font-bold uppercase tracking-widest text-slate-400">Opérations Guichet</p>
@@ -181,7 +197,7 @@ export default function CashierLayout({
                                                 onClick={() => setIsMobileMenuOpen(false)}
                                                 className={`flex items-center justify-between group px-3.5 py-3 rounded-xl text-xs font-bold transition-all duration-150 relative ${
                                                     isActive
-                                                        ? 'bg-blue-600 text-white shadow-md shadow-blue-500/10'
+                                                        ? 'bg-[#1d9e4b] text-white shadow-md shadow-green-500/10'
                                                         : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
                                                 }`}
                                             >

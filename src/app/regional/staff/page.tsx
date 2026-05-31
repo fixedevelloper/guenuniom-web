@@ -122,7 +122,7 @@ export default function GlobalStaffPage() {
             phone: formData.phone.trim(),
             employee_code: formData.employee_code.trim().toUpperCase(), // Normalisation du matricule
             role: formData.role, // 'cashier' ou 'agency_manager'
-            agency_id: Number(formData.agency_id), // Cast propre en entier pour les clés étrangères
+            agency_id: String(formData.agency_id), // Cast propre en entier pour les clés étrangères
             password: formData.password,
         };
 
@@ -155,7 +155,7 @@ export default function GlobalStaffPage() {
                     </button>
                     <button
                         onClick={() => setIsModalOpen(true)}
-                        className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 px-4 py-2.5 rounded-xl text-sm font-semibold text-white shadow-sm transition-all"
+                        className="flex items-center gap-2 bg-[#1d9e4b] hover:bg-[#1a8e43] px-4 py-2.5 rounded-xl text-sm font-semibold text-white shadow-sm transition-all"
                     >
                         <UserPlus className="w-4 h-4" /> Enrôler un Agent
                     </button>
@@ -169,7 +169,7 @@ export default function GlobalStaffPage() {
                         <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Effectif National</p>
                         <p className="text-2xl font-bold text-slate-900">{totalStaff} <span className="text-sm font-medium text-slate-400">collaborateurs</span></p>
                     </div>
-                    <div className="bg-blue-50 p-3 rounded-xl text-blue-600"><Users className="w-5 h-5" /></div>
+                    <div className="bg-green-50 p-3 rounded-xl text-green-600"><Users className="w-5 h-5" /></div>
                 </div>
 
                 <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
@@ -183,9 +183,9 @@ export default function GlobalStaffPage() {
                 <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
                     <div className="space-y-1">
                         <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Guichetiers (Cashiers)</p>
-                        <p className="text-2xl font-bold text-indigo-900">{cashiersCount} <span className="text-sm font-medium text-slate-400">front-offices</span></p>
+                        <p className="text-2xl font-bold text-green-900">{cashiersCount} <span className="text-sm font-medium text-slate-400">front-offices</span></p>
                     </div>
-                    <div className="bg-indigo-50 p-3 rounded-xl text-indigo-600"><Shield className="w-5 h-5" /></div>
+                    <div className="bg-green-50 p-3 rounded-xl text-green-600"><Shield className="w-5 h-5" /></div>
                 </div>
             </div>
 
@@ -198,7 +198,7 @@ export default function GlobalStaffPage() {
                         placeholder="Rechercher par nom, matricule, email d'un agent..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        className="w-full pl-10 pr-4 py-2 bg-slate-50/50 border border-slate-200 rounded-xl text-sm placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:bg-white transition-all"
+                        className="w-full pl-10 pr-4 py-2 bg-slate-50/50 border border-slate-200 rounded-xl text-sm placeholder-slate-400 focus:outline-none focus:border-green-500 focus:bg-white transition-all"
                     />
                 </div>
                 <div className="flex gap-2">
@@ -228,7 +228,7 @@ export default function GlobalStaffPage() {
                                         {agent.employee_code || `MAT-${agent.id}`}
                                     </span>
                                 </div>
-                                <span className="bg-indigo-50 border border-indigo-100 text-indigo-700 px-2.5 py-0.5 rounded-full text-[11px] font-bold">
+                                <span className="bg-green-50 border border-green-100 text-green-700 px-2.5 py-0.5 rounded-full text-[11px] font-bold">
                                     {agent.role_label || agent.role_name}
                                 </span>
                             </div>
@@ -281,7 +281,7 @@ export default function GlobalStaffPage() {
                                         type="text" required
                                         value={formData.first_name}
                                         onChange={(e) => setFormData({...formData, first_name: e.target.value})}
-                                        className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500 focus:bg-white"
+                                        className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-green-500 focus:bg-white"
                                         placeholder="Ex: Rodrigue"
                                     />
                                 </div>
@@ -291,7 +291,7 @@ export default function GlobalStaffPage() {
                                         type="text" required
                                         value={formData.last_name}
                                         onChange={(e) => setFormData({...formData, last_name: e.target.value})}
-                                        className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500 focus:bg-white"
+                                        className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-green-500 focus:bg-white"
                                         placeholder="Ex: Mbah"
                                     />
                                 </div>
@@ -304,7 +304,7 @@ export default function GlobalStaffPage() {
                                     type="text" required
                                     value={formData.employee_code}
                                     onChange={(e) => setFormData({...formData, employee_code: e.target.value})}
-                                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm font-mono focus:outline-none focus:border-indigo-500 focus:bg-white"
+                                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm font-mono focus:outline-none focus:border-green-500 focus:bg-white"
                                     placeholder="Ex: AG-2026-CASH04"
                                 />
                             </div>
@@ -316,7 +316,7 @@ export default function GlobalStaffPage() {
                                     type="email" required
                                     value={formData.email}
                                     onChange={(e) => setFormData({...formData, email: e.target.value})}
-                                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500 focus:bg-white"
+                                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-green-500 focus:bg-white"
                                     placeholder="agent@agensic.com"
                                 />
                             </div>
@@ -327,7 +327,7 @@ export default function GlobalStaffPage() {
                                     type="tel" required
                                     value={formData.phone}
                                     onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500 focus:bg-white"
+                                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-green-500 focus:bg-white"
                                     placeholder="Ex: +237 6XXXXXXXX"
                                 />
                             </div>
@@ -339,7 +339,7 @@ export default function GlobalStaffPage() {
                                     type="password" required
                                     value={formData.password}
                                     onChange={(e) => setFormData({...formData, password: e.target.value})}
-                                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500 focus:bg-white"
+                                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-green-500 focus:bg-white"
                                     placeholder="••••••••"
                                 />
                             </div>
@@ -365,7 +365,7 @@ export default function GlobalStaffPage() {
                                     value={formData.agency_id}
                                     required
                                     onChange={(e) => setFormData({...formData, agency_id: e.target.value})}
-                                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-700 font-semibold focus:outline-none focus:border-indigo-500"
+                                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-700 font-semibold focus:outline-none focus:border-green-500"
                                 >
                                     <option value="">-- Sélectionner une agence du territoire --</option>
                                     {agenciesList.map((agency: any) => (
@@ -391,7 +391,7 @@ export default function GlobalStaffPage() {
                                 type="submit"
                                 form="enrollment-form"
                                 disabled={createStaffMutation.isPending}
-                                className="flex-1 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl text-sm shadow-sm transition-all disabled:bg-slate-200 disabled:text-slate-400"
+                                className="flex-1 py-2.5 bg-[#1d9e4b] hover:bg-green-700 text-white font-semibold rounded-xl text-sm shadow-sm transition-all disabled:bg-slate-200 disabled:text-slate-400"
                             >
                                 {createStaffMutation.isPending ? 'Enrôlement...' : 'Valider l\'accès'}
                             </button>

@@ -74,7 +74,7 @@ export default function GlobalAgenciesPage() {
                             <span className="text-sm font-sans font-bold text-slate-500 ml-1">XAF</span>
                         </p>
                     </div>
-                    <div className="bg-blue-50 p-3 rounded-xl text-blue-600">
+                    <div className="bg-green-50 p-3 rounded-xl text-green-600">
                         <DollarSign className="w-5 h-5" />
                     </div>
                 </div>
@@ -96,7 +96,7 @@ export default function GlobalAgenciesPage() {
                         <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Couverture Réseau</p>
                         <p className="text-2xl font-bold text-slate-900">{filteredAgencies.length} <span className="text-sm font-medium text-slate-400">agences</span></p>
                     </div>
-                    <div className="bg-indigo-50 p-3 rounded-xl text-indigo-600">
+                    <div className="bg-green-50 p-3 rounded-xl text-green-600">
                         <Store className="w-5 h-5" />
                     </div>
                 </div>
@@ -111,7 +111,7 @@ export default function GlobalAgenciesPage() {
                         placeholder="Rechercher une agence par libellé, code unique ou ville..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        className="w-full pl-10 pr-4 py-2 bg-slate-50/50 border border-slate-200 rounded-xl text-sm placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                        className="w-full pl-10 pr-4 py-2 bg-slate-50/50 border border-slate-200 rounded-xl text-sm placeholder-slate-400 focus:outline-none focus:border-green-500 focus:bg-white transition-all"
                     />
                 </div>
             </div>
@@ -119,7 +119,7 @@ export default function GlobalAgenciesPage() {
             {/* Gestion des états de chargement / erreur */}
             {isLoading && (
                 <div className="bg-white rounded-2xl border border-slate-100 p-12 flex flex-col items-center justify-center gap-2">
-                    <RefreshCw className="h-6 w-6 animate-spin text-indigo-600" />
+                    <RefreshCw className="h-6 w-6 animate-spin text-green-600" />
                     <p className="text-xs font-medium text-slate-400">Interrogation des coffres-forts d'agences...</p>
                 </div>
             )}
@@ -175,7 +175,7 @@ export default function GlobalAgenciesPage() {
                                     </div>
                                     <div className="w-full bg-slate-200 h-1 rounded-full overflow-hidden">
                                         <div
-                                            className="bg-indigo-600 h-full transition-all"
+                                            className="bg-green-600 h-full transition-all"
                                             style={{ width: `${Math.min((agency.total_cash / 50000000) * 100, 100)}%` }} // Seuil d'alerte théorique à 50M XAF
                                         />
                                     </div>
@@ -190,7 +190,7 @@ export default function GlobalAgenciesPage() {
                                 {/* Actions / Statistiques rapides */}
                                 <div className="pt-2 flex items-center justify-between text-xs text-slate-400 font-semibold border-t border-slate-100">
                                     <span className="flex items-center gap-1">
-                                        <TrendingUp className="w-3.5 h-3.5 text-blue-500" /> {agency.transactions_count_today || 0} transferts aujourd'hui
+                                        <TrendingUp className="w-3.5 h-3.5 text-green-500" /> {agency.transactions_count_today || 0} transferts aujourd'hui
                                     </span>
                                 </div>
 

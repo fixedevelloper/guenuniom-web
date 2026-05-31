@@ -37,7 +37,7 @@ export default function LoginPage() {
             }
 
             // 3. Stockage dans le store Zustand (Token + User)
-            setAuth(resData.access_token, resData.user);
+            setAuth(resData.data.access_token,resData.data.access_token, resData.data.user);
 
             toast.success("Bienvenue sur Agensic");
 
@@ -56,7 +56,8 @@ export default function LoginPage() {
 
                 {/* Header */}
                 <div className="text-center mb-10">
-                    <div className="mx-auto w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg shadow-blue-200">
+                    {/* Remplacement par votre vert principal */}
+                    <div className="mx-auto w-12 h-12 bg-[#1d9e4b] rounded-2xl flex items-center justify-center mb-4 shadow-lg shadow-[#87c540]/50">
                         <Lock className="text-white w-6 h-6" />
                     </div>
                     <h1 className="text-2xl font-bold text-slate-900">Espace Agent</h1>
@@ -71,7 +72,8 @@ export default function LoginPage() {
                             <Phone className="absolute left-3 top-3.5 w-5 h-5 text-slate-400" />
                             <input
                                 {...register('phone')}
-                                className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                                // Mise à jour du focus ring
+                                className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-[#1d9e4b] outline-none transition-all"
                                 placeholder="6XX XXX XXX"
                             />
                         </div>
@@ -85,16 +87,18 @@ export default function LoginPage() {
                             <input
                                 type="password"
                                 {...register('password')}
-                                className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                                // Mise à jour du focus ring
+                                className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-[#1d9e4b] outline-none transition-all"
                                 placeholder="••••••••"
                             />
                         </div>
                         {errors.password && <p className="text-red-500 text-xs ml-1">{errors.password.message}</p>}
                     </div>
 
+                    {/* Bouton de connexion */}
                     <button
                         disabled={isSubmitting}
-                        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl transition-all shadow-md shadow-blue-200 flex items-center justify-center gap-2"
+                        className="w-full bg-[#1d9e4b] hover:bg-[#1a8e43] text-white font-bold py-3.5 rounded-xl transition-all shadow-md shadow-[#87c540]/50 flex items-center justify-center gap-2"
                     >
                         {isSubmitting ? (
                             <><Loader2 className="w-5 h-5 animate-spin" /> Connexion...</>

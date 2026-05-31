@@ -88,13 +88,13 @@ export default function CashierDashboardPage() {
 
                 <Link
                     href="/cash/remittance/send"
-                    className="bg-white border border-slate-200/80 p-5 rounded-2xl shadow-sm flex items-center justify-between hover:border-blue-500 hover:shadow-md transition-all group"
+                    className="bg-white border border-slate-200/80 p-5 rounded-2xl shadow-sm flex items-center justify-between hover:border-green-500 hover:shadow-md transition-all group"
                 >
                     <div className="space-y-1">
-                        <h3 className="font-bold text-slate-900 group-hover:text-blue-600 transition-colors">Faire un Dépôt Client</h3>
+                        <h3 className="font-bold text-slate-900 group-hover:text-green-600 transition-colors">Faire un Dépôt Client</h3>
                         <p className="text-xs text-slate-400 font-medium">Créditer le compte ou le portefeuille d'un client.</p>
                     </div>
-                    <div className="bg-blue-50 text-blue-600 p-3 rounded-xl group-hover:bg-blue-600 group-hover:text-white transition-all">
+                    <div className="bg-green-50 text-green-600 p-3 rounded-xl group-hover:bg-[#1d9e4b] group-hover:text-white transition-all">
                         <ArrowUpRight className="w-5 h-5" />
                     </div>
                 </Link>
@@ -121,7 +121,7 @@ export default function CashierDashboardPage() {
                 <div className="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm flex flex-col justify-between space-y-4">
                     <div className="flex items-center justify-between">
                         <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Mouvements Entrants (Dépôts)</span>
-                        <span className="bg-blue-50 text-blue-700 text-[11px] font-bold px-2 py-0.5 rounded-lg border border-blue-100">
+                        <span className="bg-green-50 text-bg-[#87c540] text-[11px] font-bold px-2 py-0.5 rounded-lg border border-green-100">
               {isLoading ? '...' : dashboardData?.today_deposits_count || 0} opérations
             </span>
                     </div>
@@ -131,7 +131,7 @@ export default function CashierDashboardPage() {
                             <span className="text-sm font-sans font-bold text-slate-400 ml-1.5">{currency}</span>
                         </p>
                         <p className="text-[11px] text-slate-400 mt-1 flex items-center gap-1 font-medium">
-                            <TrendingUp className="w-3 h-3 text-blue-500" /> Total des fonds collectés ce jour
+                            <TrendingUp className="w-3 h-3 text-green-500" /> Total des fonds collectés ce jour
                         </p>
                     </div>
                 </div>
@@ -163,7 +163,7 @@ export default function CashierDashboardPage() {
                     <h3 className="text-xs font-extrabold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
                         <Activity className="w-3.5 h-3.5 text-slate-400" /> Journal de vos dernières écritures
                     </h3>
-                    <Link href="/cash-dashboard/history" className="text-xs text-blue-600 font-bold hover:underline">
+                    <Link href="/cash-dashboard/history" className="text-xs text-green-600 font-bold hover:underline">
                         Voir tout l'historique →
                     </Link>
                 </div>
@@ -183,7 +183,7 @@ export default function CashierDashboardPage() {
                                 <div className="flex items-center gap-3">
                                     <div className={`p-2 rounded-xl border ${
                                         log.entry_type === 'credit'
-                                            ? 'bg-blue-50 border-blue-100 text-blue-600'
+                                            ? 'bg-green-50 border-green-100 text-green-600'
                                             : 'bg-amber-50 border-amber-100 text-amber-600'
                                     }`}>
                                         {log.entry_type === 'credit' ? <ArrowUpRight className="w-4 h-4" /> : <ArrowDownLeft className="w-4 h-4" />}
@@ -195,7 +195,7 @@ export default function CashierDashboardPage() {
                                 </div>
 
                                 <div className="text-right">
-                                    <p className={`font-mono font-bold ${log.entry_type === 'credit' ? 'text-blue-600' : 'text-slate-900'}`}>
+                                    <p className={`font-mono font-bold ${log.entry_type === 'credit' ? 'text-green-600' : 'text-slate-900'}`}>
                                         {log.entry_type === 'credit' ? '+' : '-'} {new Intl.NumberFormat('fr-FR').format(log.amount)}
                                     </p>
                                     <p className="text-[10px] text-slate-400 font-medium mt-0.5">Solde apr: {new Intl.NumberFormat('fr-FR').format(log.balance_after)}</p>

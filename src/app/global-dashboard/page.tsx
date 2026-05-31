@@ -38,7 +38,7 @@ export default function GlobalDashboardPage() {
         return (
             <div className="flex min-h-screen items-center justify-center bg-slate-50">
                 <div className="flex flex-col items-center gap-3">
-                    <RefreshCw className="h-8 w-8 animate-spin text-blue-600" />
+                    <RefreshCw className="h-8 w-8 animate-spin text-green-600" />
                     <p className="text-sm font-medium text-slate-500">Consolidation des flux inter-pays...</p>
                 </div>
             </div>
@@ -49,7 +49,7 @@ export default function GlobalDashboardPage() {
         return (
             <div className="p-6 text-center">
                 <p className="text-red-500 font-semibold">Erreur lors du chargement des rapports macro-financiers.</p>
-                <button onClick={() => refetch()} className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-xl text-sm font-medium">
+                <button onClick={() => refetch()} className="mt-4 bg-green-600 text-white px-4 py-2 rounded-xl text-sm font-medium">
                     Réessayer
                 </button>
             </div>
@@ -76,7 +76,7 @@ export default function GlobalDashboardPage() {
                             onClick={() => setPeriod(p)} // Met à jour le useState standard
                             className={`px-4 py-1.5 rounded-lg text-xs font-semibold uppercase transition-all ${
                                 period === p
-                                    ? 'bg-blue-600 text-white shadow-sm'
+                                    ? 'bg-green-600 text-white shadow-sm'
                                     : 'text-slate-600 hover:bg-slate-50'
                             }`}
                         >
@@ -93,7 +93,7 @@ export default function GlobalDashboardPage() {
                 <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm space-y-4">
                     <div className="flex items-center justify-between">
                         <span className="text-sm font-semibold text-slate-500">Volume Transigé</span>
-                        <div className="p-2.5 bg-blue-50 text-blue-600 rounded-xl"><TrendingUp className="w-5 h-5" /></div>
+                        <div className="p-2.5 bg-green-50 text-green-600 rounded-xl"><TrendingUp className="w-5 h-5" /></div>
                     </div>
                     <div>
                         <h3 className="text-2xl font-bold text-slate-900">{metrics?.totals?.volume?.toLocaleString()} XAF</h3>
@@ -154,7 +154,7 @@ export default function GlobalDashboardPage() {
                 <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 lg:col-span-2 space-y-4">
                     <div className="flex items-center justify-between">
                         <h2 className="text-lg font-bold text-slate-900">Performance Analytique par Pays</h2>
-                        <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full">Flux Consolides</span>
+                        <span className="text-xs font-semibold text-green-600 bg-green-50 px-2.5 py-1 rounded-full">Flux Consolides</span>
                     </div>
                     <div className="overflow-x-auto">
                         <table className="w-full text-left border-collapse">
@@ -209,7 +209,7 @@ export default function GlobalDashboardPage() {
                                 </div>
                                 <div className="text-right">
                                     <span className="text-sm font-extrabold text-slate-900">{corridor.share_percentage}%</span>
-                                    <p className="text-[10px] font-bold text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded mt-0.5">des flux</p>
+                                    <p className="text-[10px] font-bold text-green-600 bg-green-50 px-1.5 py-0.5 rounded mt-0.5">des flux</p>
                                 </div>
                             </div>
                         ))}

@@ -77,11 +77,13 @@ export default function ManagerAgencyLayout({
                     {/* Logo & Agence Identity */}
                     <div className="flex items-center justify-between px-2">
                         <div className="flex items-center gap-2.5">
-                            <div className="h-9 w-9 bg-emerald-600 rounded-xl flex items-center justify-center text-white font-black text-lg shadow-md shadow-emerald-600/20">
-                                M
-                            </div>
                             <div>
-                                <span className="text-white font-bold tracking-tight block">Fintech / Wallet</span>
+                              {/*  <span className="text-white font-bold tracking-tight block">Fintech / Wallet</span>*/}
+                                <img
+                                    src="/logo.png"
+                                    alt="Guen's Union Logo"
+                                    className="w-50 h-20 object-contain"
+                                />
                                 <span className="text-[10px] text-slate-500 font-medium uppercase tracking-wider block">Espace Directeur</span>
                             </div>
                         </div>

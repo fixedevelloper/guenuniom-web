@@ -57,7 +57,7 @@ export default function RegionalAdminLayout({
     if (isLoading) {
         return (
             <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 space-y-4">
-                <Loader2 className="w-8 h-8 animate-spin text-indigo-600" />
+                <Loader2 className="w-8 h-8 animate-spin text-green-600" />
                 <p className="text-xs font-mono font-bold text-slate-500 uppercase tracking-wider">
                     Consolidation des flux nationaux...
                 </p>
@@ -80,40 +80,45 @@ export default function RegionalAdminLayout({
     ];
 
     return (
-        <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col antialiased selection:bg-indigo-500 selection:text-white">
+        <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col antialiased selection:bg-green-500 selection:text-white">
 
             {/* ─── HEADER DE SUPERVISION LARGE (IDENTITY CONTROL) ─── */}
-            <header className="bg-indigo-950 text-white shadow-sm z-40 sticky top-0 px-6 py-3 border-b border-indigo-900/60 backdrop-blur-md bg-opacity-95">
+            <header className="bg-green-950 text-white shadow-sm z-40 sticky top-0 px-6 py-3 border-b border-green-900/60 backdrop-blur-md bg-opacity-95">
                 <div className="max-w-[1600px] w-full mx-auto flex items-center justify-between">
 
                     {/* Zone d'identification de la Juridiction / Pays */}
                     <div className="flex items-center gap-4">
                         <button
                             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                            className="lg:hidden p-2 hover:bg-indigo-900/60 border border-indigo-900 rounded-xl text-indigo-300 transition-colors"
+                            className="lg:hidden p-2 hover:bg-green-900/60 border border-green-900 rounded-xl text-green-300 transition-colors"
                         >
                             {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
                         </button>
                         <div className="flex flex-col">
-                            <span className="font-black text-sm tracking-tight text-white flex items-center gap-2">
-                                <span className="bg-indigo-600 p-1 rounded-lg text-white shadow-md shadow-indigo-500/20">
+                         {/*   <span className="font-black text-sm tracking-tight text-white flex items-center gap-2">
+                                <span className="bg-green-600 p-1 rounded-lg text-white shadow-md shadow-green-500/20">
                                     <ShieldAlert className="w-4 h-4" />
                                 </span>
-                                FINTX <span className="text-indigo-400 font-medium">CONTROL</span>
-                            </span>
-                            <span className="text-[11px] font-semibold text-indigo-200/70 flex items-center gap-1.5 mt-1 bg-indigo-900/40 border border-indigo-900/50 px-2 py-0.5 rounded-md">
+                                FINTX <span className="text-green-400 font-medium">CONTROL</span>
+                            </span>*/}
+                            <img
+                                src="/logo.png"
+                                alt="Guen's Union Logo"
+                                className="w-50 h-20 object-contain"
+                            />
+                            <span className="text-[11px] font-semibold text-green-200/70 flex items-center gap-1.5 mt-1 bg-green-900/40 border border-green-900/50 px-2 py-0.5 rounded-md">
                                 <MapPin className="w-3 h-3 text-rose-400" /> Territoire : <span className="text-white font-bold">{regionalData?.region_name || 'Non défini'}</span>
                             </span>
                         </div>
                     </div>
 
                     {/* KPI GLOBAL : ENCOURS TOTAL DU PAYS */}
-                    <div className="bg-indigo-900/40 border border-indigo-800/60 pl-4 pr-1.5 py-1 rounded-xl flex items-center gap-4 shadow-inner transition-all hover:border-indigo-700">
+                    <div className="bg-green-900/40 border border-green-800/60 pl-4 pr-1.5 py-1 rounded-xl flex items-center gap-4 shadow-inner transition-all hover:border-green-700">
                         <div className="text-right">
-                            <p className="text-[9px] uppercase tracking-widest font-black text-indigo-300">Espèces Consolidées (Réseau)</p>
+                            <p className="text-[9px] uppercase tracking-widest font-black text-green-300">Espèces Consolidées (Réseau)</p>
                             <p className="text-base font-mono font-black text-amber-400 tracking-tight">
                                 {new Intl.NumberFormat('fr-FR').format(regionalData?.total_cash || 0)}
-                                <span className="text-xs ml-1.5 text-indigo-300 font-sans font-medium">XAF</span>
+                                <span className="text-xs ml-1.5 text-green-300 font-sans font-medium">XAF</span>
                             </p>
                         </div>
                         <div className="bg-amber-500/10 p-2.5 rounded-lg text-amber-400 hidden sm:block border border-amber-500/20">
@@ -122,16 +127,16 @@ export default function RegionalAdminLayout({
                     </div>
 
                     {/* Profil Administrateur Pays */}
-                    <div className="flex items-center gap-3 border-l border-indigo-900 pl-4">
+                    <div className="flex items-center gap-3 border-l border-green-900 pl-4">
                         <div className="text-right hidden md:block">
                             <p className="text-xs font-bold text-slate-100 tracking-tight">{regionalData?.user?.name || 'Opérateur'}</p>
-                            <p className="text-[10px] text-indigo-400 font-mono font-medium tracking-wide uppercase mt-0.5">
+                            <p className="text-[10px] text-green-400 font-mono font-medium tracking-wide uppercase mt-0.5">
                                 National Admin
                             </p>
                         </div>
                         <button
                             onClick={handleLogout}
-                            className="p-2.5 bg-indigo-900/50 hover:bg-rose-950/40 border border-indigo-900 hover:border-rose-900/60 text-slate-400 hover:text-rose-400 rounded-xl transition-all duration-150"
+                            className="p-2.5 bg-green-900/50 hover:bg-rose-950/40 border border-green-900 hover:border-rose-900/60 text-slate-400 hover:text-rose-400 rounded-xl transition-all duration-150"
                             title="Déconnexion du poste de contrôle"
                         >
                             <LogOut className="w-4 h-4" />
@@ -163,7 +168,7 @@ export default function RegionalAdminLayout({
                                         onClick={() => setIsMobileMenuOpen(false)}
                                         className={`flex items-center justify-between group px-3.5 py-3 rounded-xl text-xs font-bold transition-all duration-150 relative ${
                                             isActive
-                                                ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/10'
+                                                ? 'bg-[#1d9e4b] text-white shadow-md shadow-green-500/10'
                                                 : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
                                         }`}
                                     >

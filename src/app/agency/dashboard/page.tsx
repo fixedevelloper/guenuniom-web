@@ -98,7 +98,7 @@ export default function AgencyDashboardPage() {
                             {new Intl.NumberFormat('fr-FR').format(data.total_cash_in)} <span className="text-xs font-sans font-bold text-slate-400">XAF</span>
                         </span>
                     </div>
-                    <div className="p-3 bg-blue-50 rounded-xl border border-blue-100 text-blue-600">
+                    <div className="p-3 bg-green-50 rounded-xl border border-green-100 text-green-600">
                         <ArrowDownRight className="w-5 h-5" />
                     </div>
                 </div>
@@ -222,7 +222,7 @@ export default function AgencyDashboardPage() {
                                     <div key={tx.id} className="flex items-center justify-between p-2 hover:bg-slate-50 rounded-xl transition-all">
                                         <div className="flex items-center gap-2.5">
                                             <div className={`p-1.5 rounded-lg border ${
-                                                tx.type === 'cash_in' ? 'bg-blue-50 border-blue-100 text-blue-600' : 'bg-amber-50 border-amber-100 text-amber-600'
+                                                tx.type === 'cash_in' ? 'bg-green-50 border-green-100 text-green-600' : 'bg-amber-50 border-amber-100 text-amber-600'
                                             }`}>
                                                 {tx.type === 'cash_in' ? <ArrowDownRight className="w-3.5 h-3.5" /> : <ArrowUpRight className="w-3.5 h-3.5" />}
                                             </div>

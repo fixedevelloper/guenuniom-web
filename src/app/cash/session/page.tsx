@@ -18,11 +18,16 @@ import { Badge } from '@/components/ui/badge';
 import { Lock, Unlock, RefreshCw, AlertTriangle, CheckCircle2, Coins, Landmark } from 'lucide-react';
 
 const openSchema = z.object({
-    opening_balance: z.string().transform((val) => parseFloat(val) || 0),
+    // coerce.number convertit automatiquement la string en nombre
+    opening_balance: z.number({
+       // invalid_type_error: "Veuillez entrer un nombre valide"
+    }),
 });
 
 const closeSchema = z.object({
-    declared_balance: z.string().transform((val) => parseFloat(val) || 0),
+    declared_balance: z.number({
+       // invalid_type_error: "Veuillez entrer un nombre valide"
+    }),
     notes: z.string().optional(),
 });
 
@@ -186,11 +191,25 @@ export default function CashSessionPage() {
                                         render={({ field }) => (
                                             <FormItem>
                                                 <FormLabel className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
-                                                    <Coins className="w-4 h-4 text-blue-600" /> Montant physique recompté (Espèces réelles)
+                                                    <Coins className="w-4 h-4 text-green-600" /> Montant physique recompté (Espèces réelles)
                                                 </FormLabel>
                                                 <FormControl>
-                                                    <Input type="number" step="0.01" placeholder="0.00" className="h-12 font-mono font-black text-lg text-slate-900 rounded-xl" {...field} onChange={(e) => { field.onChange(e.target.value); setDeclaredInput(parseFloat(e.target.value) || 0); }} />
-                                                </FormControl>
+                                                    <Input
+                                                        type="number"
+                                                        step="0.01"
+                                                        placeholder="0.00"
+                                                        className="h-12 font-mono font-black text-lg text-slate-900 rounded-xl"
+                                                        {...field}
+                                                        // Forcez la valeur en chaîne ou nombre pour éviter le type 'unknown'
+                                                        value={field.value ?? ""}
+                                                        onChange={(e) => {
+                                                            const val = e.target.value;
+                                                            // On met à jour React Hook Form
+                                                            field.onChange(val);
+                                                            // On met à jour votre état local
+                                                            setDeclaredInput(parseFloat(val) || 0);
+                                                        }}
+                                                    /></FormControl>
                                                 <FormMessage />
                                             </FormItem>
                                         )}
