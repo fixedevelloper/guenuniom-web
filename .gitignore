@@ -1,41 +1,104 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# .gitignore for RestoPro (Next.js + Tauri + Android + Laravel)
 
-# dependencies
-/node_modules
-/.pnp
+#################################################
+# NODE / PACKAGE MANAGERS
+#################################################
+node_modules/
+.pnp
 .pnp.*
 .yarn/*
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
+.pnpm-store/
 
-# testing
-/coverage
+#################################################
+# NEXT.JS
+#################################################
+.next/
+out/
+build/
 
-# next.js
-/.next/
-/out/
+#################################################
+# TAURI
+#################################################
+src-tauri/target/
+src-tauri/.cargo/
+src-tauri/gen/
+*.msi
+*.exe
+*.deb
+*.AppImage
+*.dmg
 
-# production
-/build
+#################################################
+# ANDROID / CAPACITOR
+#################################################
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/.idea/
+*.apk
+*.aab
 
-# misc
+#################################################
+# LARAVEL
+#################################################
+vendor/
+bootstrap/cache/*.php
+storage/logs/*
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+storage/app/public/*
+public/storage
+.phpunit.result.cache
+
+#################################################
+# TESTING
+#################################################
+coverage/
+
+#################################################
+# ENV FILES
+#################################################
+.env
+.env.*
+!.env.example
+
+#################################################
+# IDE / SYSTEM
+#################################################
+.vscode/
+.idea/
 .DS_Store
-*.pem
+Thumbs.db
 
-# debug
+#################################################
+# LOGS
+#################################################
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.pnpm-debug.log*
+pnpm-debug.log*
+laravel.log
 
-# env files (can opt-in for committing if needed)
-.env*
-
-# vercel
-.vercel
-
-# typescript
+#################################################
+# TYPESCRIPT
+#################################################
 *.tsbuildinfo
 next-env.d.ts
+
+#################################################
+# VERCEL
+#################################################
+.vercel/
+
+#################################################
+# TEMP FILES
+#################################################
+*.tmp
+*.temp
+*.swp

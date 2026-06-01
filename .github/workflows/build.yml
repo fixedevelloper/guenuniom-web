@@ -1,0 +1,83 @@
+name: Guen union Full Build
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Autorise la création de la Release et l'upload des fichiers
+permissions:
+  contents: write
+
+jobs:
+#################################################
+# FRONTEND
+#################################################
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+
+#################################################
+# WINDOWS (TAURI)
+#################################################
+  windows:
+    runs-on: windows-latest
+    needs: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - uses: dtolnay/rust-toolchain@stable
+      - run: npm ci
+      - run: npm run build
+      - uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Upload Windows MSI
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-artifact
+          # Chemin standard de sortie pour Tauri Windows
+          path: src-tauri/target/release/bundle/msi/*.msi
+
+#################################################
+# RELEASE (PUBLICATION)
+#################################################
+  release:
+    runs-on: ubuntu-latest
+    needs: [windows] # Supprimé android-tauri ici
+    steps:
+      - name: Download Windows Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: windows-artifact
+          path: release-assets
+
+      - name: Generate Tag Name
+        id: tag
+        run: echo "tag_name=v0.1.${{ github.run_number }}" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.tag.outputs.tag_name }}
+          name: MonoKek Release ${{ steps.tag.outputs.tag_name }}
+          files: |
+            release-assets/*.msi
+          body: |
+            Nouvelle version de guen union (Windows).
+            - Téléchargez le fichier .msi pour installer l'application.
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
