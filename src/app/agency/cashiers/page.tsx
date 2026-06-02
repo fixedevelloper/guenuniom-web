@@ -18,6 +18,7 @@ import {
     CheckCircle2,
     Plus
 } from 'lucide-react';
+import {toast} from "sonner";
 
 export default function AgencyCashiersPage() {
     const queryClient = useQueryClient();
@@ -59,7 +60,19 @@ export default function AgencyCashiersPage() {
             setIsModalOpen(false);
             setNewTillData({ name: '', code: '', current_balance: '0' });
         },
-        onError: (error: any) => alert(error?.response?.data?.message || "Erreur lors de la création du tiroir-caisse.")
+        onError: (error: any) => {
+            // 1. Extraction du message d'erreur de Laravel ou message générique de secours
+            const errorMessage = error?.response?.data?.message || "Erreur lors de la création du tiroir-caisse.";
+
+            // 2. Déclenchement du toast en mode "error" (Interface rouge/alerte de Sonner)
+            toast.error("Échec de la transaction", {
+                description: errorMessage,
+                duration: 5000, // Laisse le temps à l'opérateur de lire le motif de l'échec (5s)
+            });
+
+            // 3. Optionnel : Loguer l'erreur système pour le débuggage de l'agence
+            console.error("Détails de l'erreur de caisse :", error);
+        }
     });
 
     // 3. Mutation pour changer le statut d'un Till (is_active)
@@ -86,7 +99,19 @@ export default function AgencyCashiersPage() {
             setOperationAmount('');
             setOperationDescription('');
         },
-        onError: (error: any) => alert(error?.response?.data?.message || "Erreur lors de l'opération de caisse.")
+        onError: (error: any) => {
+            // 1. Extraction du message d'erreur de Laravel ou message générique de secours
+            const errorMessage = error?.response?.data?.message || "Erreur lors de l'opération de caisse.";
+
+            // 2. Déclenchement du toast en mode "error" (Interface rouge/alerte de Sonner)
+            toast.error("Échec de la transaction", {
+                description: errorMessage,
+                duration: 5000, // Laisse le temps à l'opérateur de lire le motif de l'échec (5s)
+            });
+
+            // 3. Optionnel : Loguer l'erreur système pour le débuggage de l'agence
+            console.error("Détails de l'erreur de caisse :", error);
+        }
     });
 
     const handleCreateTill = (e: React.FormEvent) => {
@@ -97,11 +122,11 @@ export default function AgencyCashiersPage() {
     const handleCashOperation = (e: React.FormEvent) => {
         e.preventDefault();
         if (Number(operationAmount) <= 0) {
-            alert("Le montant doit être supérieur à 0.");
+            toast("Le montant doit être supérieur à 0.");
             return;
         }
         if (operationType === 'debit' && Number(operationAmount) > selectedTill.current_balance) {
-            alert("Le montant du délestage dépasse l'encourse disponible dans le tiroir-caisse.");
+            toast("Le montant du délestage dépasse l'encourse disponible dans le tiroir-caisse.");
             return;
         }
         cashOperationMutation.mutate({

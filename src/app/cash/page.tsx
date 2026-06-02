@@ -15,6 +15,7 @@ import {
     UserCheck,
     Briefcase
 } from 'lucide-react';
+import CashierQuickActions from "./CashierQuickActions";
 
 export default function CashierDashboardPage() {
 
@@ -84,35 +85,7 @@ export default function CashierDashboardPage() {
             </div>
 
             {/* GRILLE DES ACTIONS RAPIDES (Gros boutons tactiles/cliquables pour l'efficacité) */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-
-                <Link
-                    href="/cash/remittance/send"
-                    className="bg-white border border-slate-200/80 p-5 rounded-2xl shadow-sm flex items-center justify-between hover:border-green-500 hover:shadow-md transition-all group"
-                >
-                    <div className="space-y-1">
-                        <h3 className="font-bold text-slate-900 group-hover:text-green-600 transition-colors">Faire un Dépôt Client</h3>
-                        <p className="text-xs text-slate-400 font-medium">Créditer le compte ou le portefeuille d'un client.</p>
-                    </div>
-                    <div className="bg-green-50 text-green-600 p-3 rounded-xl group-hover:bg-[#1d9e4b] group-hover:text-white transition-all">
-                        <ArrowUpRight className="w-5 h-5" />
-                    </div>
-                </Link>
-
-                <Link
-                    href="/cash/payout"
-                    className="bg-white border border-slate-200/80 p-5 rounded-2xl shadow-sm flex items-center justify-between hover:border-emerald-500 hover:shadow-md transition-all group"
-                >
-                    <div className="space-y-1">
-                        <h3 className="font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">Faire un Retrait Espèces</h3>
-                        <p className="text-xs text-slate-400 font-medium">Décaissement de fonds après validation du code de sécurité.</p>
-                    </div>
-                    <div className="bg-emerald-50 text-emerald-600 p-3 rounded-xl group-hover:bg-emerald-600 group-hover:text-white transition-all">
-                        <ArrowDownLeft className="w-5 h-5" />
-                    </div>
-                </Link>
-
-            </div>
+          <CashierQuickActions />
 
             {/* METRIQUES ANALYTIQUES DE LA JOURNÉE EN COURS */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">

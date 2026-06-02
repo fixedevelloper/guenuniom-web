@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import { Loader2, Search, ArrowRight, Wallet, CheckCircle2, User, RefreshCw, AlertTriangle } from 'lucide-react';
+import {toast} from "sonner";
 
 interface CustomerData {
     id: number;
@@ -51,7 +52,9 @@ export default function TransferPage() {
             api.post('/cash/transfer/execute', payload),
         onSuccess: () => {
             setStep('summary'); // Optionnel si vous gérez un écran de succès dédié
-            alert("Transfert effectué avec succès !");
+            toast.success("Transfert effectué avec succès !", {
+                description: "Le grand livre comptable et les portefeuilles ont été mis à jour.",
+            });
             window.location.reload();
         },
         onError: (err: any) => {

@@ -1,5 +1,3 @@
-// config/navigation.ts
-// utils/navigation.ts
 import {
     LayoutDashboard,
     UserCheck,
@@ -7,7 +5,7 @@ import {
     Receipt,
     Globe,
     Terminal,
-    Users, Building2
+    Users, Building2, ShieldAlert, ShieldCheck, CircleDollarSign, FileArchiveIcon
 } from 'lucide-react';
 
 export const navigationGroups = [
@@ -21,7 +19,9 @@ export const navigationGroups = [
         title: "Opérations & Contrôle",
         items: [
             { name: 'Transactions Globales', href: '/global-dashboard/transactions', icon: ArrowLeftRight },
+            { name: 'Commissions', href: '/global-dashboard/commissions', icon: CircleDollarSign },
             { name: 'Validation KYC', href: '/global-dashboard/kyc', icon: UserCheck },
+            { name: 'Documents', href: '/global-dashboard/documents', icon: FileArchiveIcon },
         ]
     },
     {
@@ -40,7 +40,9 @@ export const navigationGroups = [
     {
         title: "Maintenance",
         items: [
-            { name: 'Logs Système', href: '/global-dashboard/logs', icon: Terminal },
+            { name: 'Logs Système', href: '/global-dashboard/logs/system', icon: Terminal },
+            { name: 'Logs Connexion', href: '/global-dashboard/logs/connections', icon: ShieldAlert },
+            { name: 'Anti-fraude', href: '/global-dashboard/fraud-checks', icon: ShieldCheck },
         ]
     }
 ];

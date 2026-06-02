@@ -5,14 +5,11 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import {
     UserCheck,
-    UserX,
     Search,
     FileImage,
     RefreshCw,
-    ShieldAlert,
     Eye,
     Clock,
-    CheckCircle2,
     XCircle
 } from 'lucide-react';
 
@@ -28,15 +25,20 @@ export default function GlobalKycPage() {
     const [status, setStatus] = useState('pending'); // pending, approved, rejected
     const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
 
-    const { data: customers, isLoading, isError, refetch } = useQuery({
+    const { data: responseData, isLoading, refetch } = useQuery({
         queryKey: ['kycSubmissions', { search, status }],
         queryFn: () => fetchKycSubmissions({ search, status }),
         refetchOnWindowFocus: false,
     });
 
+    // Raccourcis pour correspondre à l'enveloppe de l'API Laravel { success: true, data: [...], meta: {...} }
+    const customers = responseData?.data || [];
+    const meta = responseData?.meta || {};
+
     const kycMutation = useMutation({
-        mutationFn: async ({ customerUuid, action, reason }: { customerUuid: string; action: 'approve' | 'reject'; reason?: string }) => {
-            const { data } = await api.post(`/customers/${customerUuid}/kyc-evaluate`, { action, reason });
+        // Correction : On utilise l'id du customer mis à disposition par le contrôleur
+        mutationFn: async ({ customerId, action, reason }: { customerId: number; action: 'approve' | 'reject'; reason?: string }) => {
+            const { data } = await api.post(`/customers/${customerId}/kyc-evaluate`, { action, reason });
             return data;
         },
         onSuccess: () => {
@@ -48,10 +50,9 @@ export default function GlobalKycPage() {
         }
     });
 
-    // Traducteur de type de pièce
     const formatDocType = (type: string) => {
         const types: Record<string, string> = {
-            national_id: 'CNI (Carte Nationale d\'Identité)',
+            national_id: "CNI (Carte Nationale d'Identité)",
             passport: 'Passeport',
             driving_license: 'Permis de Conduire',
             residence_permit: 'Titre de Séjour'
@@ -77,7 +78,7 @@ export default function GlobalKycPage() {
             <div className="flex flex-col md:flex-row gap-4 items-center justify-between bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm">
                 <div className="flex items-center gap-1.5 bg-slate-100 p-1 rounded-xl w-full md:w-auto">
                     {[
-                        { id: 'pending', label: 'À Valider', count: customers?.meta?.pending_count },
+                        { id: 'pending', label: 'À Valider', count: meta?.pending_count },
                         { id: 'approved', label: 'Approuvés' },
                         { id: 'rejected', label: 'Rejetés' }
                     ].map((tab) => (
@@ -118,32 +119,45 @@ export default function GlobalKycPage() {
                             <RefreshCw className="h-6 w-6 animate-spin text-green-600" />
                             <p className="text-xs font-medium text-slate-400">Chargement des pièces justificatives...</p>
                         </div>
-                    ) : customers?.data?.length === 0 ? (
+                    ) : customers.length === 0 ? (
                         <div className="bg-white rounded-2xl border border-slate-100 p-12 text-center text-slate-400 text-sm font-medium">
                             Aucune pièce d'identité en attente dans cette catégorie.
                         </div>
                     ) : (
-                        customers?.data?.map((customer: any) => (
+                        customers.map((customer: any) => (
                             <div
-                                key={customer.uuid}
+                                key={customer.id}
                                 onClick={() => setSelectedCustomer(customer)}
                                 className={`bg-white p-4 rounded-2xl border transition-all cursor-pointer flex items-center justify-between group ${
-                                    selectedCustomer?.uuid === customer.uuid ? 'border-green-500 ring-2 ring-green-50 shadow-md' : 'border-slate-100 hover:border-slate-300 shadow-sm'
+                                    selectedCustomer?.id === customer.id ? 'border-green-500 ring-2 ring-green-50 shadow-md' : 'border-slate-100 hover:border-slate-300 shadow-sm'
                                 }`}
                             >
                                 <div className="space-y-1">
-                                    <h3 className="font-bold text-slate-900 group-hover:text-green-600 transition-colors">{customer.first_name} {customer.last_name}</h3>
+                                    {/* Synchro avec customer_info.full_name */}
+                                    <h3 className="font-bold text-slate-900 group-hover:text-green-600 transition-colors">
+                                        {customer.customer_info?.full_name || 'Client inconnu'}
+                                    </h3>
                                     <div className="flex items-center gap-3 text-xs text-slate-400">
-                                        <span className="font-mono">{customer.phone_number}</span>
+                                        <span className="font-mono">{customer.customer_info?.phone_number}</span>
                                         <span>•</span>
-                                        <span className="font-semibold text-slate-600">{formatDocType(customer.kyc_document?.type)}</span>
+                                        {/* Synchro avec document.type */}
+                                        <span className="font-semibold text-slate-600">
+                                            {formatDocType(customer.document?.type)}
+                                        </span>
+                                        {/* Badge d'historique de tentatives */}
+                                        {customer.total_documents_submitted > 1 && (
+                                            <span className="text-[10px] bg-amber-50 text-amber-700 px-1.5 py-0.5 rounded font-bold">
+                                                {customer.total_documents_submitted} docs
+                                            </span>
+                                        )}
                                     </div>
                                 </div>
 
                                 <div className="flex items-center gap-3">
-                  <span className="text-xs font-mono bg-slate-100 text-slate-700 px-2.5 py-1 rounded-lg">
-                    {customer.kyc_document?.document_number}
-                  </span>
+                                    {/* Synchro avec document.document_number */}
+                                    <span className="text-xs font-mono bg-slate-100 text-slate-700 px-2.5 py-1 rounded-lg">
+                                        {customer.document?.document_number || 'N/A'}
+                                    </span>
                                     <Eye className="w-4 h-4 text-slate-400 group-hover:text-slate-600 transition-colors" />
                                 </div>
                             </div>
@@ -157,29 +171,32 @@ export default function GlobalKycPage() {
                         <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-5 space-y-5 sticky top-6">
                             <div className="border-b border-slate-100 pb-4">
                                 <h2 className="text-base font-bold text-slate-900">Analyse de la Pièce</h2>
-                                <p className="text-xs text-slate-400 mt-0.5">ID Interne : {selectedCustomer.kyc_document?.uuid?.substring(0, 8)}...</p>
+                                <p className="text-xs text-slate-400 mt-0.5">
+                                    UUID Pièce : {selectedCustomer.document?.uuid?.substring(0, 8) || 'N/A'}...
+                                </p>
                             </div>
 
-                            {/* Informations textuelles issues du nouveau schéma */}
+                            {/* Informations textuelles */}
                             <div className="space-y-2">
                                 <h4 className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Données du document</h4>
                                 <div className="bg-slate-50 rounded-xl p-3 space-y-2 text-xs font-semibold text-slate-700">
                                     <div className="flex justify-between">
                                         <span className="text-slate-400">Titulaire :</span>
-                                        <span className="text-slate-900">{selectedCustomer.first_name} {selectedCustomer.last_name}</span>
+                                        <span className="text-slate-900">{selectedCustomer.customer_info?.full_name}</span>
                                     </div>
                                     <div className="flex justify-between">
                                         <span className="text-slate-400">Type :</span>
-                                        <span className="text-slate-900">{formatDocType(selectedCustomer.kyc_document?.type)}</span>
+                                        <span className="text-slate-900">{formatDocType(selectedCustomer.document?.type)}</span>
                                     </div>
                                     <div className="flex justify-between">
                                         <span className="text-slate-400">Numéro :</span>
-                                        <span className="text-slate-900 font-mono text-green-600">{selectedCustomer.kyc_document?.document_number}</span>
+                                        <span className="text-slate-900 font-mono text-green-600">{selectedCustomer.document?.document_number}</span>
                                     </div>
-                                    {selectedCustomer.kyc_document?.verified_by_user && (
+                                    {/* Synchro avec document.verifier */}
+                                    {selectedCustomer.document?.verifier && (
                                         <div className="flex justify-between border-t border-slate-200/60 pt-2 text-[11px]">
                                             <span className="text-slate-400">Vérifié par :</span>
-                                            <span className="text-emerald-700 font-bold">{selectedCustomer.kyc_document.verified_by_user.name}</span>
+                                            <span className="text-emerald-700 font-bold">{selectedCustomer.document.verifier.full_name}</span>
                                         </div>
                                     )}
                                 </div>
@@ -189,25 +206,29 @@ export default function GlobalKycPage() {
                             <div className="space-y-3">
                                 <h4 className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Scans Numérisés</h4>
 
-                                {/* Recto (Toujours requis) */}
-                                <div className="space-y-1">
-                                    <span className="text-[11px] text-slate-400 font-bold">Face Avant (Recto)</span>
-                                    <a
-                                        href={`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/storage/${selectedCustomer.kyc_document?.front_image}`}
-                                        target="_blank" rel="noreferrer"
-                                        className="flex items-center gap-3 p-2.5 border border-slate-200 hover:border-green-400 rounded-xl bg-white transition-all group"
-                                    >
-                                        <div className="p-2 bg-green-50 text-green-600 rounded-lg"><FileImage className="w-4 h-4" /></div>
-                                        <span className="text-xs font-bold text-slate-700 truncate flex-1">Afficher le Recto</span>
-                                    </a>
-                                </div>
+                                {/* Recto (Utilise directement l'URL asset() générée par Laravel) */}
+                                {selectedCustomer.document?.front_image_url ? (
+                                    <div className="space-y-1">
+                                        <span className="text-[11px] text-slate-400 font-bold">Face Avant (Recto)</span>
+                                        <a
+                                            href={selectedCustomer.document.front_image_url}
+                                            target="_blank" rel="noreferrer"
+                                            className="flex items-center gap-3 p-2.5 border border-slate-200 hover:border-green-400 rounded-xl bg-white transition-all group"
+                                        >
+                                            <div className="p-2 bg-green-50 text-green-600 rounded-lg"><FileImage className="w-4 h-4" /></div>
+                                            <span className="text-xs font-bold text-slate-700 truncate flex-1">Afficher le Recto</span>
+                                        </a>
+                                    </div>
+                                ) : (
+                                    <div className="text-xs text-rose-500 italic">Aucune image recto fournie.</div>
+                                )}
 
-                                {/* Verso (Optionnel selon le document) */}
-                                {selectedCustomer.kyc_document?.back_image && (
+                                {/* Verso (Optionnel, utilise également l'URL complète) */}
+                                {selectedCustomer.document?.back_image_url && (
                                     <div className="space-y-1">
                                         <span className="text-[11px] text-slate-400 font-bold">Face Arrière (Verso)</span>
                                         <a
-                                            href={`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/storage/${selectedCustomer.kyc_document?.back_image}`}
+                                            href={selectedCustomer.document.back_image_url}
                                             target="_blank" rel="noreferrer"
                                             className="flex items-center gap-3 p-2.5 border border-slate-200 hover:border-green-400 rounded-xl bg-white transition-all group"
                                         >
@@ -223,14 +244,14 @@ export default function GlobalKycPage() {
                                 <div className="grid grid-cols-2 gap-3 pt-2 border-t border-slate-100">
                                     <button
                                         disabled={kycMutation.isPending}
-                                        onClick={() => kycMutation.mutate({ customerUuid: selectedCustomer.uuid, action: 'reject' })}
+                                        onClick={() => kycMutation.mutate({ customerId: selectedCustomer.id, action: 'reject' })}
                                         className="flex items-center justify-center gap-2 border border-rose-200 bg-rose-50/30 hover:bg-rose-50 text-rose-600 py-2.5 rounded-xl text-xs font-bold transition-all disabled:opacity-50"
                                     >
                                         <XCircle className="w-4 h-4" /> Rejeter
                                     </button>
                                     <button
                                         disabled={kycMutation.isPending}
-                                        onClick={() => kycMutation.mutate({ customerUuid: selectedCustomer.uuid, action: 'approve' })}
+                                        onClick={() => kycMutation.mutate({ customerId: selectedCustomer.id, action: 'approve' })}
                                         className="flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white py-2.5 rounded-xl text-xs font-bold transition-all shadow-sm disabled:opacity-50"
                                     >
                                         <UserCheck className="w-4 h-4" /> Approuver

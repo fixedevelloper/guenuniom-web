@@ -1,6 +1,6 @@
 'use client';
 
-import {useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 import { useAuthStore } from '@/store/useAuthStore';
@@ -15,10 +15,10 @@ import {
     LogOut,
     Menu,
     X,
-    ShieldAlert,
     MapPin,
     Layers,
-    Loader2,Coins,
+    Loader2,
+    Coins,
     DollarSign
 } from 'lucide-react';
 
@@ -31,19 +31,18 @@ export default function RegionalAdminLayout({
     const router = useRouter();
     const { token, user, logout } = useAuthStore();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+    // =================================================================
+    // 1. TOUS LES HOOKS EN PREMIER (Obligatoire pour React)
+    // =================================================================
+
     useEffect(() => {
         if (!token) {
             router.replace('/login');
         }
     }, [token, router]);
 
-    if (!token) return null;
-
-    const handleLogout = () => {
-        logout();
-        router.replace('/login');
-    };
-    // 1. Récupérer les données de supervision de l'administration nationale (Country Admin)
+    // Déplacé ici pour être exécuté systématiquement au démarrage
     const { data: regionalData, isLoading } = useQuery({
         queryKey: ['regionalAdminMetrics'],
         queryFn: async () => {
@@ -51,9 +50,28 @@ export default function RegionalAdminLayout({
             return data.data; // { region_name, total_cash, active_tills_count, agencies_count, user }
         },
         refetchInterval: 30000, // Rafraîchissement global toutes les 30s (Vue manager)
+        enabled: !!token, // Sécurité supplémentaire : n'exécute pas la requête si le token n'est pas encore là
     });
 
+    // =================================================================
+    // 2. LES ACTIONS / FONCTIONS DE GESTION
+    // =================================================================
 
+    const handleLogout = () => {
+        logout();
+        router.replace('/login');
+    };
+
+    // =================================================================
+    // 3. LES COMPOSANTS CONDITIONNELS ET RENDUS PRÉCOCES (Strictement après les hooks)
+    // =================================================================
+
+    // Protection n°1 : Pas de token, on n'affiche rien (Redirection en cours via useEffect)
+    if (!token) {
+        return null;
+    }
+
+    // Protection n°2 : Token présent, mais les données financières chargent encore
     if (isLoading) {
         return (
             <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 space-y-4">
@@ -75,10 +93,13 @@ export default function RegionalAdminLayout({
         {
             name: 'Gestion des frais',
             href: '/regional/fees',
-            icon: Coins // Sémantiquement parfait pour la tarification, le prélèvement et les taxes
+            icon: Coins
         },
     ];
 
+    // =================================================================
+    // 4. LE RENDU DU COMPOSANT PRINCIPAL
+    // =================================================================
     return (
         <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col antialiased selection:bg-green-500 selection:text-white">
 
@@ -95,12 +116,6 @@ export default function RegionalAdminLayout({
                             {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
                         </button>
                         <div className="flex flex-col">
-                         {/*   <span className="font-black text-sm tracking-tight text-white flex items-center gap-2">
-                                <span className="bg-green-600 p-1 rounded-lg text-white shadow-md shadow-green-500/20">
-                                    <ShieldAlert className="w-4 h-4" />
-                                </span>
-                                FINTX <span className="text-green-400 font-medium">CONTROL</span>
-                            </span>*/}
                             <img
                                 src="/logo.png"
                                 alt="Guen's Union Logo"
@@ -148,7 +163,7 @@ export default function RegionalAdminLayout({
 
             {/* ─── CADRE DE NAVIGATION & ZONE DE TRAVAIL MAX-ÉCRAN ─── */}
             <div className="flex-1 flex max-w-[1600px] w-full mx-auto relative px-4 sm:px-6 lg:px-8">
-                
+
                 {/* SIDEBAR DE NAVIGATION NATIONALE */}
                 <aside className={`
                     fixed inset-y-0 left-0 transform ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} 
@@ -179,7 +194,6 @@ export default function RegionalAdminLayout({
                                             <span className="tracking-tight">{item.name}</span>
                                         </div>
 
-                                        {/* Ligne esthétique d'activation active à droite */}
                                         {isActive && (
                                             <span className="absolute right-0 top-1/3 bottom-1/3 w-1 bg-white rounded-l-md" />
                                         )}
@@ -190,7 +204,7 @@ export default function RegionalAdminLayout({
                     </div>
                 </aside>
 
-                {/* CONTENU DE LA PAGE : Débridé pour s'étendre au maximum */}
+                {/* CONTENU DE LA PAGE */}
                 <main className="flex-1 py-6 lg:py-8 lg:pl-6 overflow-x-hidden bg-slate-50/50">
                     <div className="w-full max-w-full animation-fade-in">
                         {children}

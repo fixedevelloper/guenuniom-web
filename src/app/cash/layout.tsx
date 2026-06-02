@@ -18,7 +18,7 @@ import {
     Building,
     Clock,
     MonitorPlay,
-    Loader2
+    Loader2, ArrowLeftRight, PlusCircle, MinusCircle, SendHorizontal, Download, Receipt, CalendarClock, LayoutDashboard
 } from 'lucide-react';
 
 export default function CashierLayout({
@@ -74,40 +74,45 @@ export default function CashierLayout({
     const isOpen = sessionData?.is_open ?? false;
     const currency = sessionData?.currency || 'XAF';
 
-/*    const navigation = [
-        { name: 'Nouveau Dépôt / Versement', href: '/cash/remittance/send', icon: ArrowUpRight, color: 'text-emerald-500 bg-emerald-500/10' },
-        { name: 'Nouveau Retrait', href: '/cash/remittance/payout', icon: ArrowDownLeft, color: 'text-amber-500 bg-amber-500/10' },
-        { name: 'Historique des opérations', href: '/cash/history', icon: History, color: 'text-green-500 bg-green-500/10' },
-        { name: 'Ouverture & Clôture', href: '/cash/session', icon: Clock, color: 'text-purple-500 bg-purple-500/10' },
-    ];*/
     const navigation = [
+        {
+            title: "Tableau de Bord",
+            items: [
+                {
+                    name: 'Dashboard',
+                    href: '/cash',
+                    icon: LayoutDashboard,
+                    color: 'text-emerald-500 bg-emerald-500/10'
+                },
+            ]
+        },
         {
             title: "Opérations Courantes",
             items: [
-                { name: 'Transfert Wallet', href: '/cash/transfer', icon: ArrowUpRight, color: 'text-emerald-500 bg-emerald-500/10' },
-                { name: 'Dépôt / Cash-in', href: '/cash/cash-in', icon: ArrowDownLeft, color: 'text-blue-500 bg-blue-500/10' },
-                { name: 'Retrait / Cash-out', href: '/cash/cash-out', icon: ArrowDownLeft, color: 'text-amber-500 bg-amber-500/10' },
+                { name: 'Transfert Wallet', href: '/cash/transfer', icon: ArrowLeftRight, color: 'text-emerald-500 bg-emerald-500/10' },
+                { name: 'Dépôt / Cash-in', href: '/cash/cash-in', icon: PlusCircle, color: 'text-blue-500 bg-blue-500/10' },
+                { name: 'Retrait / Cash-out', href: '/cash/cash-out', icon: MinusCircle, color: 'text-amber-500 bg-amber-500/10' },
             ]
         },
         {
             title: "Remittance (International)",
             items: [
-                { name: 'Envoi', href: '/cash/remittance/send', icon: ArrowUpRight, color: 'text-pink-500 bg-pink-500/10' },
-                { name: 'Retrait', href: '/cash/remittance/payout', icon: ArrowDownLeft, color: 'text-cyan-500 bg-cyan-500/10' },
+                { name: 'Envoi', href: '/cash/remittance/send', icon: SendHorizontal, color: 'text-pink-500 bg-pink-500/10' },
+                { name: 'Retrait', href: '/cash/remittance/payout', icon: Download, color: 'text-cyan-500 bg-cyan-500/10' },
             ]
         },
         {
             title: "Bancaire & Remises",
             items: [
-              /*  { name: 'Opérations Bancaires', href: '/cash/banking', icon: Building, color: 'text-cyan-500 bg-cyan-500/10' },*/
-                { name: 'Paiement Factures', href: '/cash/bills-payment', icon: MonitorPlay, color: 'text-orange-500 bg-orange-500/10' },
+                // Remplacement de MonitorPlay par Receipt pour s'aligner sur la comptabilité
+                { name: 'Paiement Factures', href: '/cash/bills-payment', icon: Receipt, color: 'text-orange-500 bg-orange-500/10' },
             ]
         },
         {
             title: "Gestion & Audit",
             items: [
                 { name: 'Historique', href: '/cash/history', icon: History, color: 'text-slate-500 bg-slate-500/10' },
-                { name: 'Session & Ajustements', href: '/cash/session', icon: Clock, color: 'text-purple-500 bg-purple-500/10' },
+                { name: 'Session & Ajustements', href: '/cash/session', icon: CalendarClock, color: 'text-purple-500 bg-purple-500/10' },
             ]
         }
     ];
@@ -205,7 +210,6 @@ export default function CashierLayout({
                             transition-transform duration-200 ease-in-out z-30 w-72 bg-white border-r border-slate-200/80 pt-34 lg:pt-8 pr-6 pl-2 space-y-6
                         `}>
                             <div className="space-y-2">
-                                <p className="px-3 text-[10px] font-bold uppercase tracking-widest text-slate-400">Opérations Guichet</p>
                                 {navigation.map((section) => (
                                     <div key={section.title} className="mb-8">
                                         <p className="px-3 mb-2 text-[10px] font-bold uppercase tracking-widest text-slate-400">
@@ -219,7 +223,7 @@ export default function CashierLayout({
                                                     <Link
                                                         key={item.name}
                                                         href={item.href}
-                                                        className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all ${
+                                                        className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-md font-bold transition-all ${
                                                             isActive
                                                                 ? 'bg-[#1d9e4b] text-white shadow-md'
                                                                 : 'text-slate-600 hover:bg-slate-100'

@@ -2,8 +2,8 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { api } from '@/lib/api';
-import { useAuthStore } from '@/store/useAuthStore'; // Utilisé uniquement pour le profil de l'admin
-import { useState } from 'react';
+import { useAuthStore } from '@/store/useAuthStore';
+import React, { useState } from 'react';
 import {
     TrendingUp,
     Globe,
@@ -17,7 +17,7 @@ import {
 // Fonction de récupération des données depuis l'API Laravel
 const fetchGlobalMetrics = async (period: string) => {
     const { data } = await api.get(`/reporting/global-metrics?period=${period}`);
-    return data;
+    return data.data;
 };
 
 export default function GlobalDashboardPage() {

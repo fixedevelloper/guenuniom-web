@@ -35,7 +35,7 @@ export default function CashInPage() {
     const { data: fees, isFetching: isCalcFees } = useQuery({
         queryKey: ['fees-cash-in', amount],
         queryFn: async () => {
-            const r = await api.get(`/fees/calculate?amount=${amount}&type=cash_in`);
+            const r = await api.get(`/cash/transfer/fees/calculate?amount=${amount}&type=cash_in`);
             return r.data as { fee: number; tax: number; total: number };
         },
         enabled: amount >= 100 && step === 'amount',

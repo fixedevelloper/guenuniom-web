@@ -164,7 +164,7 @@ export default function AgencyTransactionsPage() {
                                                         {tx.transaction_type === 'cash_in' ? <ArrowDownLeft className="w-3.5 h-3.5" /> : <ArrowUpRight className="w-3.5 h-3.5" />}
                                                     </div>
                                                     <span className="text-xs uppercase font-bold tracking-wide font-mono">
-                                                        {tx.transaction_type === 'cash_in' ? 'Dépôt' : 'Retrait'}
+                                                        {tx.transaction_type}
                                                     </span>
                                                 </div>
                                             </td>
@@ -189,13 +189,23 @@ export default function AgencyTransactionsPage() {
 
                                             {/* Statut de la transaction */}
                                             <td className="py-4 px-6 text-center">
-                                                <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold ${
-                                                    tx.status === 'success' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200/50' :
-                                                    tx.status === 'pending' ? 'bg-amber-50 text-amber-700 border border-amber-200/50' :
-                                                    'bg-rose-50 text-rose-700 border border-rose-200/50'
-                                                }`}>
-                                                    {tx.status === 'success' ? 'Validé' : tx.status === 'pending' ? 'En cours' : 'Échoué'}
-                                                </span>
+    <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold ${
+        tx.status === 'success' || tx.status === 'paid' || tx.status === 'completed'
+            ? 'bg-emerald-50 text-emerald-700 border border-emerald-200/50'
+            : tx.status === 'pending'
+            ? 'bg-amber-50 text-amber-700 border border-amber-200/50'
+            : 'bg-rose-50 text-rose-700 border border-rose-200/50'
+    }`}>
+        {tx.status === 'success'
+            ? 'Validé'
+            : tx.status === 'paid'
+                ? 'Payé'
+                : tx.status === 'completed'
+                    ? 'Terminé'
+                    : tx.status === 'pending'
+                        ? 'En cours'
+                        : 'Échoué'}
+    </span>
                                             </td>
 
                                             {/* Lien vers un détail d'audit complet */}

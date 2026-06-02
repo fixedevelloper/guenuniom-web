@@ -39,7 +39,7 @@ export default function LoginPage() {
             // 3. Stockage dans le store Zustand (Token + User)
             setAuth(resData.data.access_token,resData.data.access_token, resData.data.user);
 
-            toast.success("Bienvenue sur Agensic");
+            toast.success("Bienvenue sur Guen's union");
 
             // 4. Redirection vers le dashboard
             router.push('/');
@@ -57,8 +57,13 @@ export default function LoginPage() {
                 {/* Header */}
                 <div className="text-center mb-10">
                     {/* Remplacement par votre vert principal */}
-                    <div className="mx-auto w-12 h-12 bg-[#1d9e4b] rounded-2xl flex items-center justify-center mb-4 shadow-lg shadow-[#87c540]/50">
-                        <Lock className="text-white w-6 h-6" />
+                    <div className="mx-auto w-80 h-50 p-8 bg-white rounded-2xl flex items-center justify-center mb-4 shadow-lg shadow-[#87c540]/50">
+                    {/*    <Lock className="text-white w-6 h-6" />*/}
+                        <img
+                            src="/logo.png"
+                            alt="Guen's Union Logo"
+                            className="w-full object-contain"
+                        />
                     </div>
                     <h1 className="text-2xl font-bold text-slate-900">Espace Agent</h1>
                     <p className="text-slate-500 text-sm mt-1">Connectez-vous pour accéder à vos opérations</p>
