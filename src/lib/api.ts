@@ -150,6 +150,9 @@ api.interceptors.response.use(
 
         if (!error.response) {
             console.error(
+                error.response
+            );
+            console.error(
                 "Network error"
             );
         }

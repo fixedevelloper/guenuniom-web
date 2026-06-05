@@ -64,6 +64,7 @@ export default function GlobalAgenciesPage() {
             setAdjustmentData({ action: 'fund', amount: '', description: '', is_physical: false });
         },
         onError: (error: any) => {
+            console.log(error.response)
             setAdjustmentErrorMessage(error?.response?.data?.message || "Échec de l'ajustement de coffre.");
         }
     });

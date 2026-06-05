@@ -18,7 +18,16 @@ import {
     Building,
     Clock,
     MonitorPlay,
-    Loader2, ArrowLeftRight, PlusCircle, MinusCircle, SendHorizontal, Download, Receipt, CalendarClock, LayoutDashboard
+    Loader2,
+    ArrowLeftRight,
+    PlusCircle,
+    MinusCircle,
+    SendHorizontal,
+    Download,
+    Receipt,
+    CalendarClock,
+    LayoutDashboard,
+    Users
 } from 'lucide-react';
 
 export default function CashierLayout({
@@ -111,6 +120,12 @@ export default function CashierLayout({
         {
             title: "Gestion & Audit",
             items: [
+                {
+                    name: 'Clients',
+                    href: '/cash/customers',
+                    icon: Users, // Remplacement de History par Users pour la sémantique
+                    color: 'text-indigo-500 bg-indigo-500/10'
+                },
                 { name: 'Historique', href: '/cash/history', icon: History, color: 'text-slate-500 bg-slate-500/10' },
                 { name: 'Session & Ajustements', href: '/cash/session', icon: CalendarClock, color: 'text-purple-500 bg-purple-500/10' },
             ]
