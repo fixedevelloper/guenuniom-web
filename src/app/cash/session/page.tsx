@@ -17,17 +17,16 @@ import { Badge } from '@/components/ui/badge';
 import { Lock, Unlock, RefreshCw, AlertTriangle, CheckCircle2, Coins, Landmark, Receipt } from 'lucide-react';
 import {api} from "../../../lib/api";
 
-// Utilisation de z.coerce.number() pour éviter les bugs de types String/Number de HTML5 Input
 const openSchema = z.object({
-    opening_balance: z.coerce.number({
-        invalid_type_error: "Veuillez entrer un montant initial valide"
-    }).min(0, "Le montant initial ne peut pas être négatif"),
+    opening_balance: z.coerce
+        .number({ message: "Veuillez entrer un montant initial valide" })
+        .min(0, "Le montant initial ne peut pas être négatif"),
 });
 
 const closeSchema = z.object({
-    declared_balance: z.coerce.number({
-        invalid_type_error: "Veuillez entrer un montant recompté valide"
-    }).min(0, "Le montant déclaré ne peut pas être négatif"),
+    declared_balance: z.coerce
+        .number({ message: "Veuillez entrer un montant recompté valide" })
+        .min(0, "Le montant déclaré ne peut pas être négatif"),
     notes: z.string().optional(),
 });
 
@@ -244,7 +243,7 @@ export default function CashSessionPage() {
                                                         placeholder="0"
                                                         className="h-12 font-mono font-black text-lg text-slate-900 rounded-xl"
                                                         {...field}
-                                                        value={field.value ?? ""}
+                                                        value={(field.value as string | number) ?? ""}
                                                         onChange={(e) => {
                                                             const val = e.target.value;
                                                             field.onChange(val);

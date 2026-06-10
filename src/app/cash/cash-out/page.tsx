@@ -12,6 +12,9 @@ interface CustomerData {
     full_name: string;
     phone_number: string;
     balance: number;
+    wallet:{
+        balance:number
+    }
 }
 
 export default function CashOutPage() {
