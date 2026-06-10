@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import { Loader2, Search, ArrowRight, Wallet, CheckCircle2, User, RefreshCw, AlertTriangle } from 'lucide-react';
+import {toast} from "sonner";
 
 interface CustomerData {
     id: number;
@@ -46,11 +47,20 @@ export default function CashInPage() {
         mutationFn: (payload: { recipient_id: number; amount: number }) =>
             api.post('/cash/cash-in/execute', payload),
         onSuccess: () => {
-            alert("Dépôt d'espèces effectué avec succès !");
-            window.location.reload();
+            // Notification de succès
+            toast.success("Dépôt d'espèces effectué avec succès !", {
+                duration: 2000, // Laisse le toast visible 2 secondes
+                onAutoClose: () => {
+                    window.location.reload(); // Rafraîchissement propre après lecture
+                },
+                onDismiss: () => {
+                    window.location.reload(); // Sécurité si l'opérateur ferme manuellement
+                }
+            });
         },
         onError: (err: any) => {
-            alert(err.response?.data?.message || "Une erreur est survenue lors du Cash-In.");
+            // Remplacement de alert() par un toast d'erreur
+            toast.error(err.response?.data?.message || "Une erreur est survenue lors du Cash-In.");
         }
     });
 

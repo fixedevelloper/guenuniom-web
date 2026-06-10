@@ -49,93 +49,145 @@ export default function AgencyCashiersPage() {
 
     const tillsList = tillsData?.data || [];
 
-    // 2. Mutation pour créer un nouveau Till
+// 2. Mutation pour créer un nouveau Till
     const createTillMutation = useMutation({
         mutationFn: async (till: typeof newTillData) => {
-            const { data } = await api.post('/agency/tills', till);
+            // Envoi des données typées au serveur
+            const { data } = await api.post('/agency/tills', {
+                name: till.name,
+                code: till.code,
+                // Sécurité Frontend : On s'assure d'envoyer un vrai float ou null au serveur
+                current_balance: till.current_balance ? parseFloat(till.current_balance) : 0
+            });
             return data;
         },
-        onSuccess: () => {
+        onSuccess: (data) => {
+            // 💡 UX : Utiliser de préférence le nom renvoyé par le serveur (nettoyé par le trim/strtoupper)
+            const serverTillName = data?.data?.name || newTillData.name;
+
+            toast.success("Initialisation réussie !", {
+                description: `Le guichet "${serverTillName}" a été créé et sa dotation financière a été prélevée du coffre.`,
+            });
+
+            // Invalidation globale des requêtes pour rafraîchir les listes et les KPIs du coffre
             queryClient.invalidateQueries({ queryKey: ['agencyTillsList'] });
+            queryClient.invalidateQueries({ queryKey: ['agencyVaultData'] }); // Pour mettre à jour le solde du coffre agence
+
+            // Fermeture et reset du formulaire
             setIsModalOpen(false);
             setNewTillData({ name: '', code: '', current_balance: '0' });
         },
         onError: (error: any) => {
-            // 1. Extraction du message d'erreur de Laravel ou message générique de secours
-            const errorMessage = error?.response?.data?.message || "Erreur lors de la création du tiroir-caisse.";
+            const responseData = error?.response?.data;
+            const status = error?.response?.status;
 
-            // 2. Déclenchement du toast en mode "error" (Interface rouge/alerte de Sonner)
-            toast.error("Échec de la transaction", {
+            // 1. Gestion des erreurs de validation de champs (Code 422 - ex: Code de caisse déjà pris)
+            if (status === 422 && responseData?.errors) {
+                const validationErrors = responseData.errors;
+
+                // Si vous utilisez React Hook Form, vous pouvez mapper ici :
+                // Object.keys(validationErrors).forEach((field) => setError(field, { message: validationErrors[field][0] }));
+
+                toast.error("Formulaire invalide", {
+                    description: validationErrors.code?.[0] || validationErrors.current_balance?.[0] || "Veuillez vérifier les informations saisies.",
+                    duration: 6000,
+                });
+                return;
+            }
+
+            // 2. Gestion des erreurs de logique métier (Code 422 global - ex: Provision coffre insuffisante)
+            // ou des erreurs système (Code 500) masquées par le serveur
+            const errorMessage = responseData?.message || "Une erreur réseau ou technique empêche la création du guichet.";
+
+            toast.error("Échec de la configuration", {
                 description: errorMessage,
-                duration: 5000, // Laisse le temps à l'opérateur de lire le motif de l'échec (5s)
+                duration: 6000,
             });
 
-            // 3. Optionnel : Loguer l'erreur système pour le débuggage de l'agence
-            console.error("Détails de l'erreur de caisse :", error);
+            console.error("[TILL-CREATION-FAULT] Détails :", error);
         }
     });
 
-    // 3. Mutation pour changer le statut d'un Till (is_active)
+// 3. Mutation pour changer le statut d'un Till (is_active)
     const toggleTillMutation = useMutation({
         mutationFn: async ({ id, is_active }: { id: number; is_active: boolean }) => {
             const { data } = await api.patch(`/agency/tills/${id}/toggle`, { is_active });
             return data;
         },
-        onSuccess: () => {
+        onSuccess: (_, variables) => {
             queryClient.invalidateQueries({ queryKey: ['agencyTillsList'] });
+
+            // Notification dynamique selon le nouvel état envoyé
+            if (variables.is_active) {
+                toast.success("Le guichet a été activé et est prêt pour les opérations.");
+            } else {
+                toast.warning("Le guichet a été suspendu temporairement.");
+            }
+        },
+        onError: (error: any) => {
+            toast.error(error?.response?.data?.message || "Impossible de modifier le statut de ce guichet.");
         }
     });
 
-    // 4. Mutation pour effectuer une CashOperation (Approvisionnement / Délestage)
+// 4. Mutation pour effectuer une CashOperation (Approvisionnement / Délestage)
     const cashOperationMutation = useMutation({
         mutationFn: async (payload: any) => {
             const { data } = await api.post(`/agency/tills/${selectedTill.id}/operation`, payload);
             return data;
         },
-        onSuccess: () => {
+        onSuccess: (_, variables) => {
             queryClient.invalidateQueries({ queryKey: ['agencyTillsList'] });
             queryClient.invalidateQueries({ queryKey: ['agencyDashboardStats'] });
+
+            // Libellé personnalisé pour le type de mouvement en boîte de caisse
+            const opLabel = variables.type === 'credit' ? 'Approvisionnement' : 'Délestage';
+            toast.success(`${opLabel} effectué avec succès sur le guichet !`);
+
             setIsOperationModalOpen(false);
             setOperationAmount('');
             setOperationDescription('');
         },
         onError: (error: any) => {
-            // 1. Extraction du message d'erreur de Laravel ou message générique de secours
             const errorMessage = error?.response?.data?.message || "Erreur lors de l'opération de caisse.";
 
-            // 2. Déclenchement du toast en mode "error" (Interface rouge/alerte de Sonner)
             toast.error("Échec de la transaction", {
                 description: errorMessage,
-                duration: 5000, // Laisse le temps à l'opérateur de lire le motif de l'échec (5s)
+                duration: 5000,
             });
 
-            // 3. Optionnel : Loguer l'erreur système pour le débuggage de l'agence
             console.error("Détails de l'erreur de caisse :", error);
         }
     });
 
-    const handleCreateTill = (e: React.FormEvent) => {
-        e.preventDefault();
-        createTillMutation.mutate(newTillData);
-    };
-
+// Gestion des validations locales avant exécution de la mutation
     const handleCashOperation = (e: React.FormEvent) => {
         e.preventDefault();
+
         if (Number(operationAmount) <= 0) {
-            toast("Le montant doit être supérieur à 0.");
+            // Changé en .warning pour une meilleure visibilité (Couleur ambre)
+            toast.warning("Le montant de l'opération doit être strictement supérieur à 0.");
             return;
         }
+
+        // Correction de la condition pour correspondre au type de flux du guichet
         if (operationType === 'debit' && Number(operationAmount) > selectedTill.current_balance) {
-            toast("Le montant du délestage dépasse l'encourse disponible dans le tiroir-caisse.");
+            // Changé en .error car c'est un blocage physique de solde insuffisant
+            toast.error("Opération impossible", {
+                description: "Le montant du délestage dépasse l'encours disponible dans le tiroir-caisse."
+            });
             return;
         }
+
         cashOperationMutation.mutate({
             type: operationType,
             amount: operationAmount,
             description: operationDescription
         });
     };
-
+    const handleCreateTill = (e: React.FormEvent) => {
+        e.preventDefault();
+        createTillMutation.mutate(newTillData);
+    };
     return (
         <div className="p-6 max-w-7xl mx-auto space-y-6 bg-slate-50 min-h-screen">
 

@@ -17,6 +17,7 @@ import {
     ArrowDownRight,
     ArrowUpRight
 } from 'lucide-react';
+import {toast} from "sonner";
 
 // Appels API
 const fetchTillsMetrics = async () => {
@@ -43,10 +44,15 @@ export default function GlobalTillsPage() {
             return data;
         },
         onSuccess: () => {
+            // Notification de succès pour confirmer la fermeture
+            toast.success("Le guichet a été verrouillé et sécurisé avec succès !");
+
+            // Rafraîchissement des données des guichets
             queryClient.invalidateQueries({ queryKey: ['regionalTillsList'] });
         },
         onError: (error: any) => {
-            alert(error?.response?.data?.message || "Erreur lors de la sécurisation du guichet.");
+            // Remplacement de alert() par un toast d'erreur propre
+            toast.error(error?.response?.data?.message || "Erreur lors de la sécurisation du guichet.");
         }
     });
 

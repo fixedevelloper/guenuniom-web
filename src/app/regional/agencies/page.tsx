@@ -18,6 +18,7 @@ import {
     X,
     XCircle, SlidersHorizontal
 } from 'lucide-react';
+import {toast} from "sonner";
 
 // Appels API
 const fetchAgenciesMetrics = async () => {
@@ -46,9 +47,8 @@ export default function GlobalAgenciesPage() {
 // Mutation pour envoyer l'ajustement à l'API Laravel
     const adjustVaultMutation = useMutation({
         mutationFn: async (payload: any) => {
-            // Envoi vers votre route POST (en utilisant l'UUID ou l'ID selon votre routing)
             const { data } = await api.post(`/agencies/${selectedAgencyForAdjustment?.uuid}/adjust-vault`, {
-                uuid: selectedAgencyForAdjustment?.uuid, // Conservé au cas où votre backend fait une double vérification
+                uuid: selectedAgencyForAdjustment?.uuid,
                 action: payload.action,
                 amount: Number(payload.amount),
                 description: payload.description,
@@ -56,7 +56,15 @@ export default function GlobalAgenciesPage() {
             });
             return data;
         },
-        onSuccess: () => {
+        onSuccess: (_, variables) => {
+            // Détermination dynamique du message selon l'action (fund / defund / etc.)
+            const actionLabel = variables.action === 'fund'
+                ? 'approvisionné'
+                : 'délesté';
+
+            // Notification de succès avec le nom de l'agence concernée
+            toast.success(`Le coffre de l'agence "${selectedAgencyForAdjustment?.name || 'l\'agence'}" a été ${actionLabel} avec succès !`);
+
             // Rafraîchit instantanément les données de trésorerie sur l'écran principal
             queryClient.invalidateQueries({ queryKey: ['regionalAgenciesList'] });
             setIsAdjustmentModalOpen(false);
@@ -64,8 +72,11 @@ export default function GlobalAgenciesPage() {
             setAdjustmentData({ action: 'fund', amount: '', description: '', is_physical: false });
         },
         onError: (error: any) => {
-            console.log(error.response)
-            setAdjustmentErrorMessage(error?.response?.data?.message || "Échec de l'ajustement de coffre.");
+            console.error("Erreur ajustement coffre:", error.response);
+
+            const errorMsg = error?.response?.data?.message || "Échec de l'ajustement de coffre.";
+            setAdjustmentErrorMessage(errorMsg); // Conserve votre état local d'erreur si utilisé dans la modal
+            toast.error(errorMsg);               // Alerte visuelle par toast
         }
     });
     // Formulaire de création aligné sur vos règles de validation
@@ -118,6 +129,9 @@ export default function GlobalAgenciesPage() {
             return data;
         },
         onSuccess: () => {
+            // Notification de succès avec le nom de l'agence configurée
+            toast.success(`L'agence "${formData.name || 'Nouvelle Agence'}" a été configurée avec succès !`);
+
             // ✅ Correction de la clé d'invalidation pour forcer la mise à jour visuelle du réseau
             queryClient.invalidateQueries({ queryKey: ['regionalAgenciesList'] });
             setIsModalOpen(false);
@@ -125,7 +139,11 @@ export default function GlobalAgenciesPage() {
             setFormData({ code: '', name: '', address: '', country_id: '', city_id: '', status: 'active', is_active: true });
         },
         onError: (error: any) => {
-            setErrorMessage(error?.response?.data?.message || error?.message || "Impossible de configurer cette agence.");
+            // Extraction du message : soit l'erreur locale throwing Error, soit la réponse API Laravel
+            const errorMsg = error?.response?.data?.message || error?.message || "Impossible de configurer cette agence.";
+
+            setErrorMessage(errorMsg); // Conserve votre état local d'erreur si affiché sous le formulaire
+            toast.error(errorMsg);     // Alerte instantanée à l'écran
         }
     });
 

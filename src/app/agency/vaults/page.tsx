@@ -17,7 +17,7 @@ import {
     SlidersHorizontal,
     Monitor
 } from 'lucide-react';
-
+import {toast} from "sonner";
 export default function AgencyVaultsPage() {
     const queryClient = useQueryClient();
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -36,32 +36,47 @@ export default function AgencyVaultsPage() {
         }
     });
 
-    // 2. Mutation pour soumettre la transaction
+// 2. Mutation pour soumettre la transaction
     const vaultTransactionMutation = useMutation({
         mutationFn: async (payload: any) => {
             const { data } = await api.post('/agency/vaults/transaction', payload);
             return data;
         },
-        onSuccess: () => {
+        onSuccess: (_, variables) => {
             queryClient.invalidateQueries({ queryKey: ['agencyVaultData'] });
             queryClient.invalidateQueries({ queryKey: ['agencyDashboardStats'] });
+
+            // Message dynamique selon s'il s'agit d'un versement (cash_in) ou d'un retrait (cash_out)
+            const operationLabel = variables.type === 'cash_in'
+                ? 'Dépôt/Versement effectué'
+                : 'Retrait du coffre validé';
+
+            toast.success(`${operationLabel} avec succès !`);
+
             setIsModalOpen(false);
             setAmount('');
             setDescription('');
         },
         onError: (error: any) => {
-            alert(error?.response?.data?.message || "Erreur lors de la validation du mouvement.");
+            // Remplacement de alert par un toast d'erreur
+            toast.error(error?.response?.data?.message || "Erreur lors de la validation du mouvement de coffre.");
         }
     });
 
     const handleVaultTransaction = (e: React.FormEvent) => {
         e.preventDefault();
+
+        // Validation locale : Montant positif
         if (Number(amount) <= 0) {
-            alert("Le montant doit être supérieur à 0.");
+            toast.warning("Le montant de la transaction doit être strictement supérieur à 0.");
             return;
         }
+
+        // Validation locale : Solde disponible dans le coffre central
         if (requestType === 'cash_out' && Number(amount) > (vaultData?.data?.vault_balance || 0)) {
-            alert("Le montant du retrait dépasse le solde disponible dans le coffre central.");
+            toast.error("Solde insuffisant", {
+                description: "Le montant du retrait dépasse le solde disponible actuellement dans le coffre central de l'agence."
+            });
             return;
         }
 
@@ -107,12 +122,12 @@ export default function AgencyVaultsPage() {
                     >
                         <RefreshCw className={`w-4 h-4 text-slate-500 ${isFetching ? 'animate-spin text-emerald-600' : ''}`} />
                     </button>
-                    <button
+                 {/*  <button
                         onClick={() => setIsModalOpen(true)}
                         className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 px-4 py-2.5 rounded-xl text-sm font-semibold text-white shadow-sm transition-all"
                     >
                         <TrendingUp className="w-4 h-4" /> Passer une opération
-                    </button>
+                    </button>*/}
                 </div>
             </div>
 

@@ -78,7 +78,9 @@ export default function CustomersPage() {
             return res.data;
         },
         onSuccess: () => {
+            // Notification de succès
             toast.success('Profil client créé et validé avec succès au guichet !');
+
             // Réinitialisation complète du formulaire
             setFormData({
                 first_name: '',
@@ -94,9 +96,12 @@ export default function CustomersPage() {
                 city_id: '1',
                 initial_balance: '0'
             });
+
+            // Rafraîchissement de la liste des clients
             queryClient.invalidateQueries({ queryKey: ['customersList'] });
         },
         onError: (error: any) => {
+            // Notification d'erreur avec message dynamique du backend Laravel
             toast.error(error?.response?.data?.message || 'Erreur lors de l\'immatriculation du client.');
         }
     });
@@ -192,7 +197,7 @@ export default function CustomersPage() {
                                     <input
                                         type="tel"
                                         required
-                                        placeholder="677XXXXXX"
+                                        placeholder="237677XXXXXX"
                                         value={formData.phone}
                                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                                         className="w-full pl-8 pr-3 py-2 border border-slate-200 focus:border-indigo-500 rounded-xl text-xs font-bold font-mono outline-none"

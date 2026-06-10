@@ -3,14 +3,15 @@
 import { useState } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { api } from '@/lib/api';
-import { Loader2, Search, ArrowRight, Wallet, CheckCircle2, User, RefreshCw, AlertTriangle, Landmark } from 'lucide-react';
+import { Loader2, Search, ArrowRight, CheckCircle2, User, RefreshCw, AlertTriangle, Landmark } from 'lucide-react';
+import { toast } from "sonner";
 
 interface CustomerData {
     id: number;
     reference: string;
     full_name: string;
     phone_number: string;
-    balance: number; // Essentiel pour le Cash-Out pour éviter les découverts
+    balance: number;
 }
 
 export default function CashOutPage() {
@@ -44,18 +45,26 @@ export default function CashOutPage() {
 
     // Vérification du solde : le montant demandé + les frais ne doivent pas dépasser le solde actuel
     const totalToDebit = fees?.total ?? amount;
-    const hasSufficientBalance = customer ? customer.balance >= totalToDebit : false;
+    const hasSufficientBalance = customer ? customer?.wallet.balance >= totalToDebit : false;
 
     // 3. Mutation pour valider le décaissement d'espèces
     const mutation = useMutation({
-        mutationFn: (payload: { customer_id: number; amount: number }) =>
+        // CORRECTION : Mutation alignée sur le payload attendu par Laravel ("recipient_id")
+        mutationFn: (payload: { recipient_id: number; amount: number }) =>
             api.post('/cash/cash-out/execute', payload),
         onSuccess: () => {
-            alert("Retrait d'espèces effectué avec succès !");
-            window.location.reload();
+            toast.success("Retrait d'espèces effectué avec succès !", {
+                duration: 2000,
+                onAutoClose: () => {
+                    window.location.reload();
+                },
+                onDismiss: () => {
+                    window.location.reload();
+                }
+            });
         },
         onError: (err: any) => {
-            alert(err.response?.data?.message || "Une erreur est survenue lors du Cash-Out.");
+            toast.error(err.response?.data?.message || "Une erreur est survenue lors du Cash-Out.");
         }
     });
 
@@ -83,7 +92,7 @@ export default function CashOutPage() {
 
     return (
         <div className="max-w-7xl mx-auto my-8 p-4">
-            {/* Header progressif adapté aux écrans larges */}
+            {/* Header progressif */}
             <div className="mb-8 flex items-center justify-between border-b border-slate-100 pb-4">
                 <div className="flex flex-col">
                     <h1 className="text-2xl font-black text-slate-900 tracking-tight">Guichet Cash-Out</h1>
@@ -94,7 +103,7 @@ export default function CashOutPage() {
                 </div>
             </div>
 
-            {/* Layout en 3 colonnes (2/3 actions, 1/3 audit persistant) */}
+            {/* Layout principal */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
 
                 {/* COLONNE PRINCIPALE : ACTIONS */}
@@ -131,7 +140,7 @@ export default function CashOutPage() {
                                 <div className="p-6 bg-amber-50/40 border border-amber-100 rounded-2xl flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 animate-in slide-in-from-bottom-2 duration-300">
                                     <div>
                                         <h4 className="font-bold text-slate-900 text-lg">{foundCustomer.full_name}</h4>
-                                        <p className="text-sm text-slate-500 font-medium mt-0.5">Solde dispo: <span className="font-mono font-bold text-slate-900">{foundCustomer.balance} XAF</span></p>
+                                        <p className="text-sm text-slate-500 font-medium mt-0.5">Solde dispo: <span className="font-mono font-bold text-slate-900">{foundCustomer.wallet.balance} XAF</span></p>
                                     </div>
                                     <button
                                         type="button"
@@ -155,7 +164,8 @@ export default function CashOutPage() {
                                     <input
                                         type="number"
                                         min="100"
-                                        onChange={e => setAmount(Number(e.target.value))}
+                                        // Blocage préventif des valeurs négatives à la saisie
+                                        onChange={e => setAmount(Math.max(0, Number(e.target.value)))}
                                         className="w-full p-5 text-4xl font-black bg-slate-50 border-2 border-transparent focus:border-slate-900 focus:bg-white rounded-2xl transition-all outline-none text-slate-900 pr-24"
                                         placeholder="0.00"
                                     />
@@ -205,7 +215,7 @@ export default function CashOutPage() {
                         </div>
                     )}
 
-                    {/* ÉTAPE 3 : RÉSUMÉ & DÉCAISSEMENT DE LA CAISSE */}
+                    {/* ÉTAPE 3 : RÉSUMÉ & DÉCAISSEMENT */}
                     {step === 'summary' && customer && (
                         <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-2xl shadow-slate-300/40 space-y-6 animate-in slide-in-from-bottom-6 duration-300">
                             <div className="flex items-center gap-4 border-b border-slate-100 pb-4">
@@ -237,7 +247,8 @@ export default function CashOutPage() {
                             <div className="flex flex-col sm:flex-row gap-3 pt-2">
                                 <button
                                     disabled={mutation.isPending}
-                                    onClick={() => mutation.mutate({ customer_id: customer.id, amount })}
+                                    // CORRECTION : Envoi de la clé "recipient_id" attendue par votre API Laravel
+                                    onClick={() => mutation.mutate({ recipient_id: customer.id, amount })}
                                     className="flex-1 bg-amber-600 hover:bg-amber-700 text-white py-4 rounded-2xl font-black text-base transition-all flex items-center justify-center gap-2 shadow-xl shadow-amber-600/10"
                                 >
                                     {mutation.isPending ? <Loader2 className="w-5 h-5 animate-spin" /> : "Débiter et Décasser les Fonds"}
@@ -255,7 +266,7 @@ export default function CashOutPage() {
                     )}
                 </div>
 
-                {/* COLONNE LATÉRALE : AUDIT PERSISTANT */}
+                {/* COLONNE LATÉRALE : AUDIT */}
                 <div className="lg:col-span-1 space-y-4 sticky top-6">
                     <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-xl shadow-slate-200/30">
                         <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-4">Dossier de Retrait</h3>
@@ -276,7 +287,7 @@ export default function CashOutPage() {
                                 <div className="p-4 bg-amber-50/40 border border-amber-100 rounded-2xl space-y-2 text-sm">
                                     <div className="flex justify-between text-slate-500">
                                         <span>Solde Initial :</span>
-                                        <span className="font-mono font-bold text-slate-900">{customer.balance} XAF</span>
+                                        <span className="font-mono font-bold text-slate-900">{customer?.wallet.balance} XAF</span>
                                     </div>
                                     {amount > 0 && (
                                         <>
@@ -287,7 +298,7 @@ export default function CashOutPage() {
                                             <div className="border-t border-amber-200/60 my-1" />
                                             <div className="flex justify-between text-emerald-700 font-bold">
                                                 <span>Solde Cible :</span>
-                                                <span className="font-mono">{(customer.balance - totalToDebit)} XAF</span>
+                                                <span className="font-mono">{(customer?.wallet.balance - totalToDebit)} XAF</span>
                                             </div>
                                         </>
                                     )}

@@ -20,6 +20,7 @@ import {
     AlertCircle,
     X
 } from 'lucide-react';
+import {toast} from "sonner";
 
 // Appels API
 const fetchStaffMetrics = async (filters: { role: string; search: string }) => {
@@ -66,13 +67,17 @@ export default function GlobalStaffPage() {
     const staffList = staffData?.data || [];
     const agenciesList = agenciesData?.data || [];
 
-    // 2. Mutation pour Enrôler un nouveau Staff
+// 2. Mutation pour Enrôler un nouveau Staff
     const createStaffMutation = useMutation({
         mutationFn: async (newStaff: typeof formData) => {
             const { data } = await api.post('/staff', newStaff);
             return data;
         },
         onSuccess: () => {
+            // Notification de succès avec le nom complet de l'agent enrôlé
+            const staffName = `${formData.first_name} ${formData.last_name}`.trim();
+            toast.success(`L'agent "${staffName || 'Nouveau Staff'}" a été enrôlé avec succès !`);
+
             queryClient.invalidateQueries({ queryKey: ['regionalStaffList'] });
             setIsModalOpen(false); // Fermer le modal
             setFormData({ // Réinitialiser le formulaire
@@ -81,11 +86,12 @@ export default function GlobalStaffPage() {
             });
         },
         onError: (error: any) => {
-            alert(error?.response?.data?.message || "Erreur lors de l'enrôlement de l'agent.");
+            // Remplacement de alert() par un toast d'erreur
+            toast.error(error?.response?.data?.message || "Erreur lors de l'enrôlement de l'agent.");
         }
     });
 
-    // 3. Mutation pour Activer/Désactiver un compte d'agent
+// 3. Mutation pour Activer/Désactiver un compte d'agent
     const toggleStatusMutation = useMutation({
         mutationFn: async ({ staffUuid, currentStatus }: { staffUuid: string; currentStatus: boolean }) => {
             const { data } = await api.patch(`/staff/${staffUuid}/toggle-status`, {
@@ -93,9 +99,19 @@ export default function GlobalStaffPage() {
             });
             return data;
         },
-        onSuccess: () => {
+        onSuccess: (_, variables) => {
             queryClient.invalidateQueries({ queryKey: ['regionalStaffList'] });
+
+            // Message contextuel : si l'ancien statut était actif, le nouveau est suspendu (et inversement)
+            if (variables.currentStatus) {
+                toast.warning("Le compte de l'agent a été suspendu.");
+            } else {
+                toast.success("Le compte de l'agent a été réactivé avec succès !");
+            }
         },
+        onError: (error: any) => {
+            toast.error(error?.response?.data?.message || "Impossible de modifier le statut de cet agent.");
+        }
     });
 
     const handleSubmit = (e: React.FormEvent) => {

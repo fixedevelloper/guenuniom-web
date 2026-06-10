@@ -27,7 +27,7 @@ import {
     Receipt,
     CalendarClock,
     LayoutDashboard,
-    Users
+    Users, RefreshCw
 } from 'lucide-react';
 
 export default function CashierLayout({
@@ -120,6 +120,12 @@ export default function CashierLayout({
         {
             title: "Gestion & Audit",
             items: [
+                {
+                    name: 'Gestion trésorerie',
+                    href: '/cash/request-vault-transfers', // URL alignée avec votre structure de dossier caissier
+                    icon: RefreshCw, // Symbolise la rotation et la demande de flux de fonds (Dotation/Versement)
+                    color: 'text-emerald-600 bg-emerald-500/10' // Remplacement du rouge par le vert (standard Trésorerie/Cash)
+                },
                 {
                     name: 'Clients',
                     href: '/cash/customers',

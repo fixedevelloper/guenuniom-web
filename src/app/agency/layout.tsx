@@ -5,18 +5,18 @@ import Link from 'next/link';
 import {useRouter, usePathname } from 'next/navigation';
 
 import { useAuthStore } from '@/store/useAuthStore';
-import { 
-    Users, 
-    LayoutDashboard, 
-    LogOut, 
-    Menu, 
-    X, 
+import {
+    Users,
+    LayoutDashboard,
+    LogOut,
+    Menu,
+    X,
     User,
     ChevronDown,
     Bell,
     Wallet,
     TrendingUp,
-    FileBarChart
+    FileBarChart, Shuffle
 } from 'lucide-react';
 
 interface NavigationItem {
@@ -49,11 +49,36 @@ export default function ManagerAgencyLayout({
     };
     // Sidebar recentrée sur le périmètre exclusif d'une direction d'agence
     const navigation: NavigationItem[] = [
-        { name: 'Tableau de bord', href: '/agency/dashboard', icon: LayoutDashboard },
-        { name: 'Mes Caissiers & Tills', href: '/agency/cashiers', icon: Users }, // Suivi des sessions de caisse active
-        { name: 'Flux & Transactions', href: '/agency/transactions', icon: TrendingUp }, // Opérations au sein de son agence
-        { name: 'Gestion des Caisses', href: '/agency/vaults', icon: Wallet }, // Approvisionnement et encaissements des tiroirs
-        { name: 'Rapports & Audits', href: '/agency/reports', icon: FileBarChart }, // Comptabilité de l'agence (OHADA local)
+        {
+            name: 'Tableau de bord',
+            href: '/agency/dashboard',
+            icon: LayoutDashboard
+        },
+        {
+            name: 'Mes Caissiers & Tills',
+            href: '/agency/cashiers',
+            icon: Users
+        },
+        {
+            name: 'Flux & Transactions',
+            href: '/agency/transactions',
+            icon: TrendingUp
+        },
+        {
+            name: 'Gestion des Caisses',
+            href: '/agency/vaults',
+            icon: Wallet
+        },
+        {
+            name: 'Gestion des trésoreries',
+            href: '/agency/request-vault-transfers',
+            icon: Shuffle
+        },
+        {
+            name: 'Rapports & Audits',
+            href: '/agency/reports',
+            icon: FileBarChart
+        },
     ];
 
     return (

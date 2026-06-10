@@ -19,7 +19,7 @@ import {
     Layers,
     Loader2,
     Coins,
-    DollarSign
+    DollarSign, Wallet
 } from 'lucide-react';
 
 export default function RegionalAdminLayout({
@@ -90,6 +90,11 @@ export default function RegionalAdminLayout({
         { name: 'Suivi des Caisses & Guichets', href: '/regional/tills', icon: Layers },
         { name: 'Flux & Transactions Réseau', href: '/regional/transactions', icon: TrendingUp },
         { name: 'Gestion des Équipes (Staff)', href: '/regional/staff', icon: Users },
+        {
+            name: 'Gestion de la tresorie',
+            href: '/regional/request-vault-transfers',
+            icon: Wallet
+        },
         {
             name: 'Gestion des frais',
             href: '/regional/fees',

@@ -19,6 +19,7 @@ import {
     Coins,
     Hash
 } from 'lucide-react';
+import {toast} from "sonner";
 
 // Appels API
 const fetchAgencies = async () => {
@@ -74,7 +75,7 @@ export default function GlobalAgenciesPage() {
         }));
     };
 
-    // 3. Mutation pour créer une agence
+// 3. Mutation pour créer une agence
     const createAgencyMutation = useMutation({
         mutationFn: async (newAgency: typeof formData) => {
             const payload = {
@@ -87,18 +88,23 @@ export default function GlobalAgenciesPage() {
             const { data } = await api.post('/agencies', payload);
             return data;
         },
-        onSuccess: () => {
+        onSuccess: (res) => {
+            // Notification de succès avec le nom de l'agence créée
+            toast.success(`L'agence "${formData.name || 'Nouvelle Agence'}" a été créée avec succès !`);
+
             queryClient.invalidateQueries({ queryKey: ['agenciesList'] });
             setIsModalOpen(false);
             setErrorMessage(null);
             setFormData({ code: '', name: '', address: '', country_id: '', city_id: '', status: 'active', is_active: true });
         },
         onError: (error: any) => {
-            setErrorMessage(error?.response?.data?.message || "Impossible de configurer cette agence.");
+            const errorMsg = error?.response?.data?.message || "Impossible de configurer cette agence.";
+            setErrorMessage(errorMsg); // Conserve votre état local si nécessaire
+            toast.error(errorMsg);     // Alerte visuelle par toast
         }
     });
 
-    // 4. Mutation pour suspendre / activer une agence au clic
+// 4. Mutation pour suspendre / activer une agence au clic
     const toggleAgencyMutation = useMutation({
         mutationFn: async (uuid: string) => {
             const { data } = await api.patch(`/agencies/${uuid}/toggle`);
@@ -106,6 +112,11 @@ export default function GlobalAgenciesPage() {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['agenciesList'] });
+            // Notification globale de mise à jour du statut
+            toast.success("Le statut opérationnel de l'agence a été mis à jour.");
+        },
+        onError: (error: any) => {
+            toast.error(error?.response?.data?.message || "Erreur lors de la modification du statut de l'agence.");
         }
     });
 

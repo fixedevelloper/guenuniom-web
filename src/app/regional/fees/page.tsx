@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import { Percent, Plus, RefreshCw, Search, ShieldAlert, Trash2, ArrowLeftRight, X, Globe } from 'lucide-react';
+import {toast} from "sonner";
 
 export default function GlobalFeesPage() {
     const queryClient = useQueryClient();
@@ -49,19 +50,36 @@ export default function GlobalFeesPage() {
             return data;
         },
         onSuccess: () => {
+            // Notification de succès pour confirmer la nouvelle grille
+            toast.success("La nouvelle règle de tarification a été configurée avec succès !");
+
             queryClient.invalidateQueries({ queryKey: ['regionalFeesList'] });
             setIsModalOpen(false);
-            setFormData({ transaction_type: 'transfer', destination_country_id: '', min_amount: '', max_amount: '', fixed_fee: '0', percentage_fee: '0', tax_percentage: '0' });
+            setFormData({
+                transaction_type: 'transfer',
+                destination_country_id: '',
+                min_amount: '',
+                max_amount: '',
+                fixed_fee: '0',
+                percentage_fee: '0',
+                tax_percentage: '0'
+            });
         },
-        onError: (error: any) => alert(error?.response?.data?.message || "Erreur de configuration.")
+        onError: (error: any) => {
+            // Remplacement de alert() par un toast d'erreur
+            toast.error(error?.response?.data?.message || "Erreur lors de la configuration des frais.");
+        }
     });
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+
+        // Validation locale des paliers de montant
         if (Number(formData.min_amount) >= Number(formData.max_amount)) {
-            alert("Le montant minimum doit être inférieur au montant maximum.");
+            toast.warning("Le montant minimum doit être strictement inférieur au montant maximum.");
             return;
         }
+
         createFeeMutation.mutate(formData);
     };
 
