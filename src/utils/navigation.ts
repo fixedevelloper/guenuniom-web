@@ -5,7 +5,7 @@ import {
     Receipt,
     Globe,
     Terminal,
-    Users, Building2, ShieldAlert, ShieldCheck, CircleDollarSign, FileArchiveIcon
+    Users, Building2, ShieldAlert, ShieldCheck, CircleDollarSign, FileArchiveIcon, MessageCircle
 } from 'lucide-react';
 
 export const navigationGroups = [
@@ -22,6 +22,11 @@ export const navigationGroups = [
             { name: 'Commissions', href: '/global-dashboard/commissions', icon: CircleDollarSign },
             { name: 'Validation KYC', href: '/global-dashboard/kyc', icon: UserCheck },
             { name: 'Documents', href: '/global-dashboard/documents', icon: FileArchiveIcon },
+            {
+                name: 'Chat',
+                href: '/global-dashboard/chat',
+                icon: MessageCircle,
+            }
         ]
     },
     {

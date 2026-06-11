@@ -16,7 +16,7 @@ import {
     Bell,
     Wallet,
     TrendingUp,
-    FileBarChart, Shuffle
+    FileBarChart, Shuffle, MessageCircle
 } from 'lucide-react';
 
 interface NavigationItem {
@@ -79,6 +79,11 @@ export default function ManagerAgencyLayout({
             href: '/agency/reports',
             icon: FileBarChart
         },
+        {
+            name: 'Chat',
+            href: '/agency/chat',
+            icon: MessageCircle,
+        }
     ];
 
     return (

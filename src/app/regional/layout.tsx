@@ -19,7 +19,7 @@ import {
     Layers,
     Loader2,
     Coins,
-    DollarSign, Wallet
+    DollarSign, Wallet, MessageCircle
 } from 'lucide-react';
 
 export default function RegionalAdminLayout({
@@ -100,6 +100,12 @@ export default function RegionalAdminLayout({
             href: '/regional/fees',
             icon: Coins
         },
+        {
+            name: 'Chat',
+            href: '/regional/chat',
+            icon: MessageCircle,
+            color: 'text-emerald-500 bg-emerald-500/10'
+        }
     ];
 
     // =================================================================
@@ -133,15 +139,28 @@ export default function RegionalAdminLayout({
                     </div>
 
                     {/* KPI GLOBAL : ENCOURS TOTAL DU PAYS */}
-                    <div className="bg-green-900/40 border border-green-800/60 pl-4 pr-1.5 py-1 rounded-xl flex items-center gap-4 shadow-inner transition-all hover:border-green-700">
-                        <div className="text-right">
-                            <p className="text-[9px] uppercase tracking-widest font-black text-green-300">Espèces Consolidées (Réseau)</p>
-                            <p className="text-base font-mono font-black text-amber-400 tracking-tight">
-                                {new Intl.NumberFormat('fr-FR').format(regionalData?.total_cash || 0)}
-                                <span className="text-xs ml-1.5 text-green-300 font-sans font-medium">XAF</span>
-                            </p>
+                    <div className="bg-green-900/40 border border-green-800/60 pl-4 pr-1.5 py-2 rounded-xl flex items-center justify-between gap-4 shadow-inner transition-all hover:border-green-700">
+                        <div className="flex flex-col gap-1">
+                            <div className="text-left">
+                                <p className="text-[9px] uppercase tracking-widest font-black text-green-300">Espèces Consolidées (Réseau)</p>
+                                <p className="text-base font-mono font-black text-amber-400 tracking-tight">
+                                    {new Intl.NumberFormat('fr-FR').format(regionalData?.total_wallet_balance || 0)}
+                                    <span className="text-xs ml-1.5 text-green-300 font-sans font-medium">{regionalData?.currency || 'XAF'}</span>
+                                </p>
+                            </div>
+
+                            {/* Ligne secondaire pour le Coffre Central (Country Vault) */}
+                            <div className="text-left border-t border-green-800/50 pt-1 mt-0.5">
+                                <p className="text-[10px] uppercase tracking-wider font-bold text-green-400/80 flex items-center gap-1">
+                                    <span>↳ Dont Coffre Central :</span>
+                                    <span className="font-mono font-black text-emerald-400">
+                    {new Intl.NumberFormat('fr-FR').format(regionalData?.country_vault_balance || 0)} {regionalData?.currency || 'XAF'}
+                </span>
+                                </p>
+                            </div>
                         </div>
-                        <div className="bg-amber-500/10 p-2.5 rounded-lg text-amber-400 hidden sm:block border border-amber-500/20">
+
+                        <div className="bg-amber-500/10 p-2.5 rounded-lg text-amber-400 hidden sm:block border border-amber-500/20 self-center">
                             <DollarSign className="w-4 h-4" />
                         </div>
                     </div>

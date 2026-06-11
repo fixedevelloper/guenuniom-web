@@ -27,7 +27,7 @@ import {
     Receipt,
     CalendarClock,
     LayoutDashboard,
-    Users, RefreshCw
+    Users, RefreshCw, MessageCircle
 } from 'lucide-react';
 
 export default function CashierLayout({
@@ -115,6 +115,17 @@ export default function CashierLayout({
             items: [
                 // Remplacement de MonitorPlay par Receipt pour s'aligner sur la comptabilité
                 { name: 'Paiement Factures', href: '/cash/bills-payment', icon: Receipt, color: 'text-orange-500 bg-orange-500/10' },
+            ]
+        },
+        {
+            title: "",
+            items: [
+                {
+                    name: 'Chat',
+                    href: '/cash/chat',
+                    icon: MessageCircle,
+                    color: 'text-emerald-500 bg-emerald-500/10'
+                },
             ]
         },
         {
