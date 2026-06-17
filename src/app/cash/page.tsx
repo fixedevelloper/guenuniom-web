@@ -136,7 +136,7 @@ export default function CashierDashboardPage() {
                     <h3 className="text-xs font-extrabold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
                         <Activity className="w-3.5 h-3.5 text-slate-400" /> Journal de vos dernières écritures
                     </h3>
-                    <Link href="/cash-dashboard/history" className="text-xs text-green-600 font-bold hover:underline">
+                    <Link href="/cash/history" className="text-xs text-green-600 font-bold hover:underline">
                         Voir tout l'historique →
                     </Link>
                 </div>
