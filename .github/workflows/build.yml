@@ -10,9 +10,9 @@ permissions:
   contents: write
 
 jobs:
-#################################################
-# FRONTEND
-#################################################
+  #################################################
+  # FRONTEND
+  #################################################
   frontend:
     runs-on: ubuntu-latest
     steps:
@@ -24,9 +24,9 @@ jobs:
       - run: npm ci
       - run: npm run build
 
-#################################################
-# WINDOWS (TAURI)
-#################################################
+  #################################################
+  # WINDOWS (TAURI)
+  #################################################
   windows:
     runs-on: windows-latest
     needs: frontend
@@ -39,10 +39,17 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
       - run: npm ci
       - run: npm run build
+
+      # Correctif pour l'erreur de macro NSIS "NSISCOMCALL"
+      - name: Install specific NSIS version (Fix NSISCOMCALL macro error)
+        run: |
+          choco install nsis --version=3.09 --allow-downgrade --yes
+          echo "C:\Program Files (x86)\NSIS" >> $GITHUB_PATH
+
       - uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      
+
       - name: Upload Windows MSI
         uses: actions/upload-artifact@v4
         with:
@@ -50,12 +57,12 @@ jobs:
           # Chemin standard de sortie pour Tauri Windows
           path: src-tauri/target/release/bundle/msi/*.msi
 
-#################################################
-# RELEASE (PUBLICATION)
-#################################################
+  #################################################
+  # RELEASE (PUBLICATION)
+  #################################################
   release:
     runs-on: ubuntu-latest
-    needs: [windows] # Supprimé android-tauri ici
+    needs: [windows]
     steps:
       - name: Download Windows Artifact
         uses: actions/download-artifact@v4

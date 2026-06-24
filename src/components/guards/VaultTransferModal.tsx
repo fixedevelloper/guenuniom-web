@@ -93,12 +93,30 @@ export default function VaultTransferModal({ isModalOpen, setIsModalOpen, userRo
         }
 
         // Soumission sécurisée
-        vaultTransferMutation.mutate({
-            level,
-            type: flowType,
-            amount: parsedAmount,
-            notes: notes.trim()
-        });
+        vaultTransferMutation.mutate(
+            {
+                level,
+                type: flowType,
+                amount: parsedAmount,
+                notes: notes.trim()
+            },
+            {
+                // On ferme le modal UNIQUEMENT si le serveur a validé le transfert
+                onSuccess: () => {
+                    queryClient.invalidateQueries({ queryKey: ['cashierTransfersPending'] });
+                    setIsModalOpen(false);
+                    // Optionnel : un petit toast de succès fait toujours plaisir
+                    toast.success("Transfert validé avec succès");
+                },
+                onError: (error) => {
+                    // Optionnel : l'erreur est souvent gérée globalement,
+                    // mais on s'assure ici que le modal RESTE ouvert pour que l'utilisateur puisse corriger
+                    toast.error("Échec du transfert", {
+                        description: error.message
+                    });
+                }
+            }
+        );
     };
 
     // Formatage dynamique pour l'affichage d'aide visuelle (ex: 1500000 -> 1 500 000 XAF)

@@ -65,7 +65,7 @@ export default function LoginPage() {
                             className="w-full h-auto object-contain max-h-[100px]"
                         />
                     </div>
-                    <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Espace Agent</h1>
+                  {/*  <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Espace Agent</h1>*/}
                     <p className="text-slate-500 text-xs sm:text-sm mt-1">Connectez-vous pour accéder à vos opérations</p>
                 </div>
 
