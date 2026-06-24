@@ -1,18 +1,18 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "Guen's union",
+  "productName": "Guens Union",
   "version": "0.1.0",
   "identifier": "com.ballack.guen-union",
- "build": {
-  "beforeDevCommand": "npm run dev",
-  "devUrl": "http://localhost:3000",
-  "beforeBuildCommand": "npm run build",
-  "frontendDist": "../out"
-},
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://localhost:3000",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../out"
+  },
   "app": {
     "windows": [
       {
-        "title": "guen-union",
+        "title": "Guen's Union",
         "width": 800,
         "height": 600
       }

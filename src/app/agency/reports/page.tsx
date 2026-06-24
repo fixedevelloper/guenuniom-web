@@ -8,39 +8,89 @@ import {
     Download,
     RefreshCw,
     ShieldAlert,
-    Calendar,
     TrendingUp,
     ArrowDownLeft,
     ArrowUpRight,
     Users,
-    Layers,
-    PieChart as PieIcon
+    Layers
 } from 'lucide-react';
 
-export default function AgencyReportsPage() {
-    const [period, setPeriod] = useState<'daily' | 'weekly' | 'monthly'>('daily');
+// --- Interfaces de Typage Strict (Domaine Financier / Agence) ---
+interface ReportMetrics {
+    total_cash_in: number;
+    total_cash_out: number;
+    total_fees: number;
+    active_tills_count: number;
+}
 
-    // 1. Extraction des données analytiques de la succursale
-    const { data: reportData, isLoading, isError, refetch, isFetching } = useQuery({
+interface TillBreakdown {
+    till_code: string;
+    cashier_name: string;
+    cash_in_volume: number;
+    cash_out_volume: number;
+}
+
+interface ApiResponse {
+    status: string;
+    data: {
+        metrics: ReportMetrics;
+        breakdowns: TillBreakdown[];
+    };
+}
+
+type PeriodType = 'daily' | 'weekly' | 'monthly';
+
+export default function AgencyReportsPage() {
+    const [period, setPeriod] = useState<PeriodType>('daily');
+
+    // 1. Extraction des données analytiques avec typage générique TanStack Query
+    const { data: reportData, isLoading, isError, refetch, isFetching } = useQuery<ApiResponse>({
         queryKey: ['agencyReports', period],
         queryFn: async () => {
-            const { data } = await api.get('/agency/reports', {
+            const { data } = await api.get<ApiResponse>('/agency/reports', {
                 params: { period }
             });
             return data;
         }
     });
 
-    const metrics = reportData?.data?.metrics || { total_cash_in: 0, total_cash_out: 0, total_fees: 0, active_tills_count: 0 };
-    const breakDowns = reportData?.data?.breakdowns || [];
+    const metrics = reportData?.data?.metrics || {
+        total_cash_in: 0,
+        total_cash_out: 0,
+        total_fees: 0,
+        active_tills_count: 0
+    };
+
+    const breakdowns = reportData?.data?.breakdowns || [];
 
     const formatCurrency = (amount: number) => {
         return new Intl.NumberFormat('fr-FR').format(amount) + ' XAF';
     };
 
-    const triggerDownload = (reportType: string) => {
-        alert(`Génération et téléchargement du rapport [${reportType}] au format PDF/Excel encours...`);
-        // Logique d'appel vers l'export natif (ex: window.open(`/api/agency/reports/export?type=${reportType}&period=${period}`))
+    const triggerDownload = async (reportType: string) => {
+        try {
+            // Idéalement, si ton instance `api` (Axios) gère déjà les tokens :
+            const response = await api.get(`/agency/reports/export`, {
+                params: { type: reportType, period: period },
+                responseType: 'blob' // TRÈS IMPORTANT pour la gestion des fichiers binaires/PDF
+            });
+
+            // Créer un lien temporaire pour déclencher le téléchargement dans le navigateur
+            const blob = new Blob([response.data], { type: 'application/pdf' });
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `Rapport_${reportType}_${period}.pdf`);
+            document.body.appendChild(link);
+            link.click();
+
+            // Nettoyage du DOM
+            link.parentNode?.removeChild(link);
+            window.URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error("Erreur d'export PDF:", error);
+            alert("Impossible de générer le document réglementaire pour le moment.");
+        }
     };
 
     if (isLoading) {
@@ -88,7 +138,7 @@ export default function AgencyReportsPage() {
                     <button
                         onClick={() => refetch()}
                         disabled={isFetching}
-                        className="p-2.5 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 transition-all shadow-sm"
+                        className="p-2.5 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 transition-all shadow-sm disabled:opacity-70"
                     >
                         <RefreshCw className={`w-4 h-4 text-slate-500 ${isFetching ? 'animate-spin text-emerald-600' : ''}`} />
                     </button>
@@ -177,13 +227,13 @@ export default function AgencyReportsPage() {
                     </div>
 
                     <div className="space-y-3.5 max-h-[280px] overflow-y-auto pr-1">
-                        {breakDowns.length === 0 ? (
+                        {breakdowns.length === 0 ? (
                             <div className="text-center py-12 text-xs text-slate-400 font-medium">Aucune donnée de ventilation disponible.</div>
                         ) : (
-                            breakDowns.map((till: any) => {
+                            breakdowns.map((till) => {
                                 const total = till.cash_in_volume + till.cash_out_volume;
                                 const inPercent = total > 0 ? (till.cash_in_volume / total) * 100 : 0;
-                                const outPercent = total > 0 ? (till.cash_out_volume / total) * 100 : 0;
+                                const outPercent = total > 0 ? 100 - inPercent : 0; // Sécurité mathématique pour obtenir exactement 100%
 
                                 return (
                                     <div key={till.till_code} className="space-y-1.5 border-b border-slate-50 pb-3 last:border-0 last:pb-0">
@@ -193,8 +243,14 @@ export default function AgencyReportsPage() {
                                         </div>
                                         {/* Barre de répartition visuelle */}
                                         <div className="w-full h-3 bg-slate-100 rounded-full overflow-hidden flex">
-                                            <div style={{ width: `${inPercent}%` }} className="h-full bg-green-500" title={`Dépôts: ${inPercent.toFixed(1)}%`} />
-                                            <div style={{ width: `${outPercent}%` }} className="h-full bg-amber-500" title={`Retraits: ${outPercent.toFixed(1)}%`} />
+                                            {total > 0 ? (
+                                                <>
+                                                    <div style={{ width: `${inPercent}%` }} className="h-full bg-green-500 transition-all duration-300" title={`Dépôts: ${inPercent.toFixed(1)}%`} />
+                                                    <div style={{ width: `${outPercent}%` }} className="h-full bg-amber-500 transition-all duration-300" title={`Retraits: ${outPercent.toFixed(1)}%`} />
+                                                </>
+                                            ) : (
+                                                <div className="w-full h-full bg-slate-200" title="Aucun flux" />
+                                            )}
                                         </div>
                                         <div className="flex justify-between text-[10px] text-slate-400 font-mono font-bold">
                                             <span className="text-green-600">IN: {formatCurrency(till.cash_in_volume)}</span>
